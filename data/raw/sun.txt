@@ -1,0 +1,131 @@
+FORMAT_VERSION: 2
+SESSION: Sunday PM
+SCHEDULE_MODE: ANCHORED_WEEKLY
+ANCHOR_WEEK: WEEK 1 = (DATE: 2026-02-22)
+WEEK_INTERVAL_DAYS: 7
+
+====================================
+SEASON PHASE: REGULAR
+====================================
+
+WEEK 1 | DATE: 2026-02-22
+
+GAME | ID: sun_w1_g1 | 09:00 AM | sun_tC vs sun_tG | SCORE: 68-58 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w1_g2 | 10:00 AM | sun_tB vs sun_tI | SCORE: 67-58 | WINNER: sun_tB | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w1_g3 | 11:00 AM | sun_tH vs sun_tF | SCORE: 67-51 | WINNER: sun_tH | STATUS: completed | type: championship | RESULT_TYPE: null
+GAME | ID: sun_w1_g4 | 12:00 PM | sun_tE vs sun_tA | SCORE: 62-58 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tD | WEEK: 1
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_start | PRIORITY: high | MESSAGE: The regular season is underway.
+
+WEEK 2 
+
+GAME | ID: sun_w2_g1 | 09:00 AM | sun_tD vs sun_tI | SCORE: 89-69 | WINNER: sun_tD | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w2_g2 | 10:00 AM | sun_tC vs sun_tB | SCORE: 59-38 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w2_g3 | 11:00 AM | sun_tF vs sun_tA | SCORE: 86-74 | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w2_g4 | 12:00 PM | sun_tE vs sun_tH | SCORE: 97-84 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tG | WEEK: 2
+
+WEEK 3 
+
+GAME | ID: sun_w3_g1 | 09:00 AM | sun_tB vs sun_tD | SCORE: 74-67 | WINNER: sun_tB | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w3_g2 | 10:00 AM | sun_tG vs sun_tI | SCORE: 71-69 | WINNER: sun_tG | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w3_g3 | 11:00 AM | sun_tC vs sun_tE | SCORE: 61-52 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w3_g4 | 12:00 PM | sun_tH vs sun_tA | SCORE: 90-69 | WINNER: sun_tH | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tF | WEEK: 3
+
+WEEK 4 
+
+GAME | ID: sun_w4_g1 | 09:00 AM | sun_tG vs sun_tF | SCORE: FORFEIT | WINNER: sun_tG | STATUS: completed | type: regular | RESULT_TYPE: forfeit
+GAME | ID: sun_w4_g2 | 10:00 AM | sun_tA vs sun_tD | SCORE: 84-66 | WINNER: sun_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w4_g3 | 11:00 AM | sun_tB vs sun_tH | SCORE: 68-64 | WINNER: sun_tB | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w4_g4 | 12:00 PM | sun_tE vs sun_tI | SCORE: 62-49 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tC | WEEK: 4 
+
+WEEK 5 
+
+GAME | ID: sun_w5_g1 | 09:00 AM | sun_tB vs sun_tA | SCORE: 59-57 | WINNER: sun_tB | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w5_g2 | 10:00 AM | sun_tC vs sun_tD | SCORE: 76-55 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w5_g3 | 11:00 AM | sun_tF vs sun_tE | SCORE: 82-45 | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w5_g4 | 12:00 PM | sun_tH vs sun_tG | SCORE: 102-61 | WINNER: sun_tH | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tI | WEEK: 5
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_start | PRIORITY: high | MESSAGE: Registration for the next session is due by Week 6.
+
+WEEK 6 
+
+GAME | ID: sun_w6_g1 | 09:00 AM | sun_tF vs sun_tB | SCORE: 76-55 | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w6_g2 | 10:00 AM | sun_tD vs sun_tG | SCORE: 64-58 | WINNER: sun_tD | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w6_g3 | 11:00 AM | sun_tC vs sun_tA | SCORE: 55-53 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w6_g4 | 12:00 PM | sun_tH vs sun_tI | SCORE: 70-65 | WINNER: sun_tH | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tE | WEEK: 6
+
+WEEK 7 
+
+GAME | ID: sun_w7_g1 | 09:00 AM | sun_tF vs sun_tD | SCORE: 88-63 | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w7_g2 | 10:00 AM | sun_tC vs sun_tI | SCORE: FORFEIT | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: forfeit
+GAME | ID: sun_w7_g3 | 11:00 AM | sun_tG vs sun_tA | SCORE: 65-56 | WINNER: sun_tG | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w7_g4 | 12:00 PM | sun_tE vs sun_tB | SCORE: 51-50 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tH | WEEK: 7
+
+WEEK 8 
+
+GAME | ID: sun_w8_g1 | 10:00 AM | sun_tF vs sun_tI | SCORE: FORFEIT | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: forfeit
+GAME | ID: sun_w8_g2 | 11:00 AM | sun_tE vs sun_tD | SCORE: 104-75 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w8_g3 | 12:00 PM | sun_tC vs sun_tH | SCORE: 73-47 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tG | WEEK: 8 
+BYE | TEAM: sun_tA | WEEK: 8 
+BYE | TEAM: sun_tB | WEEK: 8
+
+WEEK 9 
+
+GAME | ID: sun_w9_g1 | 10:00 AM | sun_tA vs sun_tI | SCORE: 71-65 | WINNER: sun_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w9_g2 | 11:00 AM | sun_tB vs sun_tG | SCORE: 57-45 | WINNER: sun_tB | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w9_g3 | 12:00 PM | sun_tF vs sun_tH | SCORE: 71-66 | WINNER: sun_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tE | WEEK: 9 
+BYE | TEAM: sun_tC | WEEK: 9 
+BYE | TEAM: sun_tD | WEEK: 9
+
+WEEK 10 
+
+GAME | ID: sun_w10_g1 | 10:00 AM | sun_tC vs sun_tF | SCORE: 65-64 | WINNER: sun_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w10_g2 | 11:00 AM | sun_tE vs sun_tG | SCORE: 82-63 | WINNER: sun_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: sun_w10_g3 | 12:00 PM | sun_tD vs sun_tH | SCORE: 97-94 | WINNER: sun_tH | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: sun_tB | WEEK: 10 
+BYE | TEAM: sun_tI | WEEK: 10 
+BYE | TEAM: sun_tA | WEEK: 10 
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_start | PRIORITY: high | MESSAGE: The regular season has concluded. Playoffs are expected to begin soon. 
+
+====================================
+SEASON PHASE: PLAYOFFS
+====================================
+
+WEEK 11 
+
+GAME | TIME: 09:00 AM | MATCHUP: seed2_sun_tF vs seed7_sun_tA | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_1 | ROUND: quarterfinal
+GAME | TIME: 10:00 AM | MATCHUP: seed1_sun_tC vs seed8_sun_tD | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_2 | ROUND: quarterfinal
+GAME | TIME: 11:00 AM | MATCHUP: seed4_sun_tB vs seed5_sun_tH | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_3 | ROUND: quarterfinal
+GAME | TIME: 12:00 PM | MATCHUP: seed3_sun_tE vs seed6_sun_tG | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_4 | ROUND: quarterfinal
+
+ANNOUNCEMENT | DATE: 2026-05-03 | MESSAGE: 🏆 Playoffs Round 1 is now underway.
+
+------------------------------------
+
+WEEK 12 
+
+GAME | TIME: 10:00 AM | MATCHUP: TBD vs TBD | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_5 | ROUND: semifinal
+GAME | TIME: 11:00 AM | MATCHUP: TBD vs TBD | SCORE: N/A | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ID: GAME_6 | ROUND: semifinal
+
+ANNOUNCEMENT | DATE: 2026-05-10 | MESSAGE: 🏆 Playoffs Round 2
+ANNOUNCEMENT | DATE: 2026-05-10 | MESSAGE: 🏆 ALL playoff teams please bring $35 PER TEAM for ref fees

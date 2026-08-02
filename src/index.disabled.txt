@@ -1,0 +1,55 @@
+import * as functions from "firebase-functions/v2/firestore";
+import * as admin from "firebase-admin";
+import fetch from "node-fetch";
+import { DocumentSnapshot } from "firebase-admin/firestore";
+
+admin.initializeApp();
+
+export const sendLeagueNotification = functions.onDocumentCreated(
+  "notifications/{notificationId}",
+  async (event) => {
+    // Firestore snapshot
+    const snap: DocumentSnapshot | undefined = event.data;
+    // Params from path (e.g., {notificationId})
+    const params = event.params; // type: Record<string,string>
+
+    if (!snap) return;
+
+    const notification = snap.data();
+    if (!notification) return;
+
+    const message: string = notification.message;
+    const leagueDay: string = notification.leagueDay;
+
+    try {
+      // 1️⃣ Get all push tokens
+      const tokensSnap = await admin.firestore().collection("pushTokens").get();
+      const tokens: string[] = tokensSnap.docs
+        .map(doc => doc.data().token)
+        .filter((t): t is string => Boolean(t)); // ensure string
+
+      if (tokens.length === 0) return;
+
+      // 2️⃣ Send notification to each token
+      const sendPromises = tokens.map(token =>
+        fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: token,
+            sound: "default",
+            title: `League Update - ${leagueDay}`,
+            body: message,
+            data: { message, leagueDay },
+          }),
+        })
+      );
+
+      await Promise.all(sendPromises);
+      console.log(`Notifications sent successfully: ${tokens.length}`);
+      console.log("Notification ID:", params.notificationId); // access param directly
+    } catch (err) {
+      console.error("Error sending notifications:", err);
+    }
+  }
+);

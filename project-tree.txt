@@ -1,0 +1,129 @@
+.
+├── android
+│   ├── app
+│   │   ├── build.gradle
+│   │   ├── debug.keystore
+│   │   ├── proguard-rules.pro
+│   │   └── src
+│   ├── build.gradle
+│   ├── gradle
+│   │   └── wrapper
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   └── settings.gradle
+├── app
+│   ├── _layout.tsx
+│   ├── (screens)
+│   │   └── LeagueNotifications.tsx
+│   ├── (tabs)
+│   │   ├── _layout.tsx
+│   │   ├── champs
+│   │   ├── chat.tsx
+│   │   ├── index.tsx
+│   │   ├── league-rules.tsx
+│   │   ├── schedule
+│   │   ├── search.tsx
+│   │   ├── settings.tsx
+│   │   ├── standings
+│   │   └── updates
+│   ├── assets
+│   │   ├── champs
+│   │   └── images
+│   └── declarations.d.ts
+├── app.config.js
+├── assets
+│   ├── icon.png
+│   ├── images
+│   ├── splash.png
+│   └── TME.logo.png
+├── babel.config.cjs
+├── components
+│   ├── BackButton.tsx
+│   ├── BracketWithLines.tsx
+│   ├── ChatHeader.tsx
+│   ├── CustomNavBar.tsx
+│   ├── ItemList.tsx
+│   ├── ScreenLayout.tsx
+│   └── SubScreenLayout.tsx
+├── context
+│   └── ThemeContext.tsx
+├── declarations.d.ts
+├── eslint.config.js
+├── expo-env.d.ts
+├── ios
+│   ├── build
+│   │   └── generated
+│   ├── Podfile
+│   ├── Podfile.lock
+│   ├── Podfile.properties.json
+│   ├── Pods
+│   │   ├── Headers
+│   │   ├── hermes-engine
+│   │   ├── hermes-engine-artifacts
+│   │   ├── libavif
+│   │   ├── libdav1d
+│   │   ├── libwebp
+│   │   ├── Local Podspecs
+│   │   ├── Manifest.lock
+│   │   ├── Pods.xcodeproj
+│   │   ├── React-Core-prebuilt
+│   │   ├── ReactNativeCore-artifacts
+│   │   ├── ReactNativeDependencies
+│   │   ├── ReactNativeDependencies-artifacts
+│   │   ├── SDWebImage
+│   │   ├── SDWebImageAVIFCoder
+│   │   ├── SDWebImageSVGCoder
+│   │   ├── SDWebImageWebPCoder
+│   │   └── Target Support Files
+│   ├── TMEAPP
+│   │   ├── AppDelegate.swift
+│   │   ├── Images.xcassets
+│   │   ├── Info.plist
+│   │   ├── PrivacyInfo.xcprivacy
+│   │   ├── SplashScreen.storyboard
+│   │   ├── Supporting
+│   │   ├── TMEAPP-Bridging-Header.h
+│   │   └── TMEAPP.entitlements
+│   ├── TMEAPP.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   └── xcshareddata
+│   └── TMEAPP.xcworkspace
+│       ├── contents.xcworkspacedata
+│       ├── xcshareddata
+│       └── xcuserdata
+├── package-lock.json
+├── package.json
+├── project-tree.txt
+├── README.md
+├── simplified_tree.txt
+├── src
+│   ├── constants
+│   │   └── spacing.ts
+│   ├── context
+│   │   └── ThemeContext.tsx
+│   ├── data
+│   │   ├── captainChampsMap.ts
+│   │   ├── captainScheduleMap.ts
+│   │   ├── captainStandingsMap.ts
+│   │   └── leagueData.ts
+│   ├── hooks
+│   │   ├── useAuth.ts
+│   │   └── useNotifications.ts
+│   ├── lib
+│   │   └── firebase.ts
+│   ├── notifications
+│   │   ├── NotificationProvider.tsx
+│   │   └── types.ts
+│   ├── theme
+│   │   ├── colors.ts
+│   │   └── ThemeProvider.tsx
+│   └── utils
+│       └── getUserId.ts
+├── tsconfig.json
+├── types
+│   └── react-native-calendar-picker.d.ts
+└── types.d.ts
+
+60 directories, 67 files

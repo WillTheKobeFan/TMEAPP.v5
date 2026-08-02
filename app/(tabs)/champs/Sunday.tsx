@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, Image, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import SubScreenLayout from "src/components/SubScreenLayout"
 import { useRouter } from 'expo-router';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
@@ -32,43 +32,34 @@ const photos: PhotoItem[] = [
     caption: 'April 13th, 2025\n Team: Timmy\n Record: 7-1',
   },
   {
-   id: '5',
+    id: '5',
     image: require('../../assets/champs/Sunday/Sun_01_12_25.png'),
-    caption: 'January 12th, 2025\n Team: Dex\n Record: 6-2', 
+    caption: 'January 12th, 2025\n Team: Dex\n Record: 6-2',
   },
 ];
 
-export default function Monday() {
+export default function SundayChamps() {
   const router = useRouter();
-
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // ImageViewer URLs
   const imageUrls = photos.map((photo) => ({
     url: '',
     props: { source: photo.image },
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.backText}>←</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.title}>Sunday AM.YMCA {"\n"}   Champs 2025-26</Text>
-
-        <View style={{ width: 24 }} />
-      </View>
-
-      {/* Photo Feed */}
+    <SubScreenLayout
+      title={"Sunday.AM YMCA\nChamps 2025-26"}
+      backRoute={'/champs' as const}
+      disableScroll={true} // <-- prevents nested ScrollView warning
+    >
+      {/* FlatList handles its own scrolling */}
       <FlatList<PhotoItem>
         data={photos}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={{ paddingBottom: 20, paddingTop: 10 }}
         renderItem={({ item, index }) => (
           <View style={styles.card}>
             <TouchableOpacity
@@ -80,8 +71,6 @@ export default function Monday() {
             >
               <Image source={item.image} style={styles.image} />
             </TouchableOpacity>
-
-            {/* Caption ONLY in feed */}
             <Text style={styles.caption}>{item.caption}</Text>
           </View>
         )}
@@ -90,7 +79,6 @@ export default function Monday() {
       {/* Full-screen zoom modal */}
       <Modal visible={visible} transparent={false}>
         <View style={{ flex: 1, backgroundColor: '#000' }}>
-          {/* Zoomable image */}
           <ImageViewer
             imageUrls={imageUrls}
             index={activeIndex}
@@ -108,57 +96,21 @@ export default function Monday() {
           />
         </View>
       </Modal>
-    </SafeAreaView>
+    </SubScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  backText: {
-    fontSize: 20,
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  card: {
-    marginBottom: 24,
-  },
-  image: {
-    width: '100%',
-    height: 300,
-    resizeMode: 'cover',
-  },
+  card: { marginBottom: 24 },
+  image: { width: '100%', height: 300, resizeMode: 'cover' },
   caption: {
     paddingHorizontal: 16,
     paddingTop: 8,
     fontSize: 16,
     fontWeight: '700',
-    textAlign: 'center', // centered under the image
+    textAlign: 'center',
     color: '#333',
   },
-  closeBtn: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    zIndex: 10,
-  },
-  closeText: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: '600',
-  },
+  closeBtn: { position: 'absolute', top: 50, right: 20, zIndex: 10 },
+  closeText: { color: '#fff', fontSize: 22, fontWeight: '600' },
 });

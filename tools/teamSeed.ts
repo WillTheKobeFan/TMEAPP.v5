@@ -1,0 +1,44 @@
+// app/scripts/teamSeed.ts
+
+export type Team = {
+  teamId: string;
+  displayName: string;
+  league: string;
+};
+
+export const teamSeed: Team[] = [
+  // ======================
+  // 🟡 SUNDAY (9 TEAMS)
+  // ======================
+  { teamId: "sun_tA", displayName: "Ziller", league: "Sunday" },
+  { teamId: "sun_tB", displayName: "Tom", league: "Sunday" },
+  { teamId: "sun_tC", displayName: "Edwards", league: "Sunday" },
+  { teamId: "sun_tD", displayName: "Rich", league: "Sunday" },
+  { teamId: "sun_tE", displayName: "Timmy", league: "Sunday" },
+  { teamId: "sun_tF", displayName: "TeeJ", league: "Sunday" },
+  { teamId: "sun_tG", displayName: "Dale", league: "Sunday" },
+  { teamId: "sun_tH", displayName: "Prince", league: "Sunday" },
+  { teamId: "sun_tI", displayName: "Dex", league: "Sunday" },
+
+  // ======================
+  // 🔵 MONDAY
+  // ======================
+  { teamId: "mon_tA", displayName: "Trifecta", league: "Monday" },
+  { teamId: "mon_tB", displayName: "Coffey", league: "Monday" },
+  { teamId: "mon_tC", displayName: "Chimney", league: "Monday" },
+  { teamId: "mon_tD", displayName: "Mac Concrete", league: "Monday" },
+  { teamId: "mon_tE", displayName: "Hard Rock", league: "Monday" },
+  { teamId: "mon_tF", displayName: "The Other Bar", league: "Monday" },
+  { teamId: "mon_tG", displayName: "JRL", league: "Monday" },
+
+  // ======================
+  // 🟢 WEDNESDAY
+  // ======================
+  { teamId: "wed_tA", displayName: "ReLeaf", league: "Wednesday" },
+  { teamId: "wed_tB", displayName: "Mark", league: "Wednesday" },
+  { teamId: "wed_tC", displayName: "Gross", league: "Wednesday" },
+  { teamId: "wed_tD", displayName: "Gibson", league: "Wednesday" },
+  { teamId: "wed_tE", displayName: "Edwards", league: "Wednesday" },
+  { teamId: "wed_tF", displayName: "Will", league: "Wednesday" },
+  { teamId: "wed_tG", displayName: "Rob", league: "Wednesday" }
+];

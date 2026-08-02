@@ -1,55 +1,139 @@
 // app/(tabs)/_layout.tsx
-import { useEffect, useState } from "react";
+
+// app/(tabs)/_layout.tsx
+
+import React from "react";
 import { Tabs } from "expo-router";
-import CustomNavBar from "../components/CustomNavBar";
-import { NotificationProvider } from "../../src/notifications/NotificationProvider";
-import { db, auth } from "@/src/lib/firebase";
-import { signInAnonymously } from "firebase/auth";
-import { Ionicons } from "@expo/vector-icons";
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
-export default function TabLayout() {
-  const [currentUid, setCurrentUid] = useState<string | null>(null);
+import CustomNavBar2 from "src/components/CustomNavBar2";
 
-  const ADMIN_UID = "JOsMmAiup9SwJLECIWOpX891TTJ2";
-
-  useEffect(() => {
-    if (!auth.currentUser) {
-      signInAnonymously(auth)
-        .then((userCredential) => {
-          console.log("Anonymous sign-in successful ✅");
-          console.log("User UID:", userCredential.user.uid);
-          setCurrentUid(userCredential.user.uid);
-        })
-        .catch(console.error);
-    } else {
-      setCurrentUid(auth.currentUser.uid);
-    }
-  }, []);
-
+export default function TabsLayout() {
   return (
-    <NotificationProvider>
-      <Tabs
-        screenOptions={{ headerShown: false }}
-        // Correctly type props for TS
-        tabBar={(props: BottomTabBarProps) => <CustomNavBar {...props} />}
-      >
-        <Tabs.Screen name="index" options={{ tabBarLabel: "Home", title: "Home" }} />
-        <Tabs.Screen name="schedule" options={{ tabBarLabel: "Schedule", title: "Schedule" }} />
-        <Tabs.Screen name="standings" options={{ tabBarLabel: "Standings", title: "Standings" }} />
-        <Tabs.Screen name="updates" options={{ tabBarLabel: "Updates", title: "Updates" }} />
-        <Tabs.Screen name="champs" options={{ tabBarLabel: "Champs", title: "Champs" }} />
-        <Tabs.Screen 
-          name="chat" 
-          options={{ 
-            title: "Chat", 
-            headerShown: true, 
-            headerRight: () => (
-              <Ionicons name="chatbubble-outline" size={24} style={{ marginRight: 15 }} />
-            ),
-          }}
-        />
-      </Tabs>
-    </NotificationProvider>
+    <Tabs
+      initialRouteName="league-home"
+      screenOptions={{
+        headerShown: false,
+        sceneStyle: {
+          backgroundColor: "#F7F7FA",
+        },
+      }}
+      tabBar={(props) => <CustomNavBar2 {...props} />}
+    >
+      {/* Main CustomNavBar2 routes */}
+
+      <Tabs.Screen
+        name="league-home"
+        options={{
+          title: "Home",
+        }}
+      />
+
+      <Tabs.Screen
+        name="schedule"
+        options={{
+          title: "Schedule",
+        }}
+      />
+
+      <Tabs.Screen
+        name="standings"
+        options={{
+          title: "Standings",
+        }}
+      />
+
+      <Tabs.Screen
+        name="inbox"
+        options={{
+          title: "Inbox",
+        }}
+      />
+
+      <Tabs.Screen
+        name="champs"
+        options={{
+          title: "Champs",
+        }}
+      />
+
+      <Tabs.Screen
+        name="search"
+        options={{
+          title: "Search",
+        }}
+      />
+
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+        }}
+      />
+
+      {/* Routes inside (tabs) that should not appear in CustomNavBar2 */}
+
+      <Tabs.Screen
+        name="league"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="league-rules"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="player-hub"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="find-my-team"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="faq"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="chat"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="SettingsStack"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="updates"
+        options={{
+          href: null,
+        }}
+      />
+
+      <Tabs.Screen
+        name="index.disabled"
+        options={{
+          href: null,
+        }}
+      />
+    </Tabs>
   );
 }

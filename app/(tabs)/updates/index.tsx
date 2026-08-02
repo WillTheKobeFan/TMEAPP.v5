@@ -1,103 +1,73 @@
+// app/(tabs)/updates/index.tsx
+
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useRouter, Stack } from "expo-router";
+import { View, Text, StyleSheet } from "react-native";
+import ScreenLayout from "src/components/ScreenLayout";
+import LeagueNightButtons from "src/components/navigation/LeagueNightButtons";
 
-export default function Standings() {
-  const router = useRouter();
-
+export default function Updates() {
   return (
-    <>
-      {/* Navigation header */}
-      <Stack.Screen
-        options={{
-          title: "Standings",
-          headerStyle: { backgroundColor: "#000000ff" },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-        }}
-      />
+    <ScreenLayout title="Updates" hideBack>
+      <View style={styles.wrapper}>
+        <View style={styles.infoCard}>
+          <Text style={styles.infoTitle}>Updates Overview</Text>
 
-      <View style={styles.container}>
-        {/* Screen header inside the view */}
-        <Text style={styles.screenHeader}>Updates</Text>
+          <Text style={styles.infoText}>
+            Choose a league night to view current updates.
+          </Text>
 
-        {/* Buttons centered below header */}
-        <View style={styles.buttonsWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/updates/Sunday")
-            }
-          >
-            <Text style={styles.buttonText}>Sunday AM.YMCA</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/updates/Monday")
-            }
-          >
-            <Text style={styles.buttonText}>Monday PM.Berlin</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/updates/Tuesday")
-            }
-          >
-            <Text style={styles.buttonText}>Tuesday PM.YMCA</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/updates/Wednesday")
-            }
-          >
-            <Text style={styles.buttonText}>Wednesday PM.Berlin</Text>
-          </TouchableOpacity>
+          <Text style={styles.bulletText}>• League Announcements</Text>
+          <Text style={styles.bulletText}>• Schedule Changes</Text>
+          <Text style={styles.bulletText}>• Gym Changes</Text>
+          <Text style={styles.bulletText}>• Playoff Updates</Text>
+          <Text style={styles.bulletText}>• Championship News</Text>
         </View>
+
+        <LeagueNightButtons baseRoute="/updates" />
       </View>
-    </>
+    </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
+    alignItems: "center",
+    paddingTop: 40,
   },
-  screenHeader: {
-    fontSize: 32,
-    fontWeight: "bold",
+
+  infoCard: {
+    width: "70%",
+    backgroundColor: "#f2efef",
+    borderRadius: 12,
+    paddingVertical: 18,
+    paddingHorizontal: 18,
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+
+  infoTitle: {
     color: "#250f74ff",
+    fontSize: 20,
+    fontWeight: "700",
     textAlign: "center",
-    marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 10,
   },
-  buttonsWrapper: {
-    flex: 1,
-    justifyContent: "center", // keeps buttons in middle of remaining space
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#250f74ff",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    borderRadius: 10,
-    marginBottom: 15,
-    width: "80%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
+
+  infoText: {
+    color: "#333",
+    fontSize: 16,
     fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+
+  bulletText: {
+    color: "#333",
+    fontSize: 15,
+    fontWeight: "500",
+    marginBottom: 4,
+    textAlign: "center",
   },
 });
-
-
-

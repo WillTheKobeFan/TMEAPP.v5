@@ -1,0 +1,111 @@
+FORMAT_VERSION: 2
+SESSION: Monday PM
+SCHEDULE_MODE: ANCHORED_WEEKLY
+ANCHOR_WEEK: WEEK 1 = (DATE: 2026-03-23)
+WEEK_INTERVAL_DAYS: 7
+
+====================================
+SEASON PHASE: REGULAR
+====================================
+
+WEEK 1 | DATE: 2026-03-23
+
+GAME | ID: mon_w1_g1 | 07:00 PM | mon_tA vs mon_tB | SCORE: 68-36 | WINNER: mon_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w1_g2 | 08:00 PM | mon_tC vs mon_tD | SCORE: FORFEIT | WINNER: mon_tD | STATUS: completed | type: regular | RESULT_TYPE: forfeit
+GAME | ID: mon_w1_g3 | 09:00 PM | mon_tE vs mon_tF | SCORE: 61-52 | WINNER: mon_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tG | WEEK: 1
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_start | PRIORITY: high | MESSAGE: The regular season is underway.
+
+WEEK 2 
+
+GAME | ID: mon_w2_g1 | 07:00 PM | mon_tA vs mon_tD | SCORE: 52-50 | WINNER: mon_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w2_g2 | 08:00 PM | mon_tB vs mon_tE | SCORE: 62-39 | WINNER: mon_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w2_g3 | 09:00 PM | mon_tG vs mon_tC | SCORE: 90-70 | WINNER: mon_tG | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tF | WEEK: 2 
+
+WEEK 3 
+
+GAME | ID: mon_w3_g1 | 07:00 PM | mon_tF vs mon_tA | SCORE: 65-57 | WINNER: mon_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w3_g2 | 08:00 PM | mon_tC vs mon_tB | SCORE: 45-32 | WINNER: mon_tC | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w3_g3 | 09:00 PM | mon_tD vs mon_tE | SCORE: 64-56 | WINNER: mon_tD | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tG | WEEK: 3
+
+WEEK 4 
+
+GAME | ID: mon_w4_g1 | 07:00 PM | mon_tF vs mon_tD | SCORE: 56-42 | WINNER: mon_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w4_g2 | 08:00 PM | mon_tA vs mon_tG | SCORE: 75-66 | WINNER: mon_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w4_g3 | 09:00 PM | mon_tE vs mon_tC | SCORE: 73-57 | WINNER: mon_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tB | WEEK: 4
+
+WEEK 5 
+
+GAME | ID: mon_w5_g1 | 07:00 PM | mon_tA vs mon_tE | SCORE: 74-68 | WINNER: mon_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w5_g2 | 08:00 PM | mon_tF vs mon_tG | SCORE: 70-53 | WINNER: mon_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w5_g3 | 09:00 PM | mon_tD vs mon_tB | SCORE: 71-48 | WINNER: mon_tD | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tC | WEEK: 5
+
+ANNOUNCEMENT | PHASE: regular | TYPE: registration | PRIORITY: high | MESSAGE: Registration is due for next season by Week 6
+
+WEEK 6 
+
+GAME | ID: mon_w6_g1 | 07:00 PM | mon_tA vs mon_tC | SCORE: 69-59 | WINNER: mon_tA | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w6_g2 | 08:00 PM | mon_tB vs mon_tF | SCORE: 40-71 | WINNER: mon_tF | STATUS: completed | type: regular | RESULT_TYPE: null
+GAME | ID: mon_w6_g3 | 09:00 PM | mon_tE vs mon_tG | SCORE: 65-54 | WINNER: mon_tE | STATUS: completed | type: regular | RESULT_TYPE: null
+
+BYE | TEAM: mon_tD | WEEK: 6
+
+WEEK 7 
+
+GAME | ID: mon_w7_g1 | 07:00 PM | mon_tC vs mon_tF | SCORE: 43-52 | WINNER: mon_tF | STATUS: completed | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w7_g2 | 08:00 PM | mon_tD vs mon_tE | SCORE: 41-67 | WINNER: mon_tE | STATUS: completed | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w7_g3 | 09:00 PM | mon_tB vs mon_tG | SCORE: 41-66 | WINNER: mon_tG | STATUS: completed | type: regular | RESULT_TYPE: pending
+
+BYE | TEAM: mon_tA | WEEK: 7
+
+WEEK 8 
+
+GAME | ID: mon_w8_g1 | 07:00 PM | mon_tA vs mon_tB | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w8_g2 | 08:00 PM | mon_tE vs mon_tF | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w8_g3 | 09:00 PM | mon_tC vs mon_tD | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+
+BYE | TEAM: mon_tG | WEEK: 8
+
+WEEK 9 
+
+GAME | ID: mon_w9_g1 | 07:00 PM | mon_tA vs mon_tC | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w9_g2 | 08:00 PM | mon_tG vs mon_tE | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+
+BYE | TEAM: mon_tB | WEEK: 9
+BYE | TEAM: mon_tD | WEEK: 9
+BYE | TEAM: mon_tF | WEEK: 9
+
+WEEK 10 
+
+GAME | ID: mon_w10_g1 | 07:00 PM | mon_tB vs mon_tF | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+GAME | ID: mon_w10_g2 | 08:00 PM | mon_tD vs mon_tG | SCORE: N/A | WINNER: N/A | STATUS: scheduled | type: regular | RESULT_TYPE: pending
+
+BYE | TEAM: mon_tA | WEEK: 10
+BYE | TEAM: mon_tC | WEEK: 10
+BYE | TEAM: mon_tE | WEEK: 10
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_end | PRIORITY: high | MESSAGE: The regular season has concluded. Playoffs are expected to begin soon. 
+
+====================================
+SEASON PHASE: PLAYOFFS
+====================================
+
+WEEK 11 
+
+GAME | ID: mon_w11_g1 | TIME: 07:00 PM | seed1: TBD vs seed4: TBD | SCORE: null | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ROUND: semifinal
+GAME | ID: mon_w11_g2 | TIME: 08:00 PM | seed2: TBD vs seed3: TBD | SCORE: null | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ROUND: semifinal
+GAME | ID: mon_w11_g3 | TIME: 09:00 PM | winner: mon_w11_g1 vs winner: mon_w11_g2 | SCORE: null | WINNER: null | STATUS: scheduled | TYPE: playoff | RESULT_TYPE: pending | ROUND: championship
+
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Playoffs Semi-Finals & Championship
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Playoff teams please bring $35 per GAME for ref fees
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Winning team please stay for Championship photo

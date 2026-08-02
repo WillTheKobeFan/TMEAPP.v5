@@ -1,105 +1,212 @@
-// ** index.tsx 4 button screen; copy for Standings, Champs, Updates index's 
+// app/(tabs)/standings/index.tsx
 
+import React, { useMemo } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { useRouter } from "expo-router";
 
+import {
+  AppScreen,
+  ScreenContent,
+  ScreenHeader,
+} from "@/components/layout";
+import { LeagueNightButton } from "@/components/league";
+import { useLeague } from "@/context/LeagueContext";
+import {
+  getActiveLeagueNights,
+  type LeagueNightData,
+} from "@/config/leagueNightConfig";
+import {
+  colors,
+  radius,
+  shadows,
+  spacing,
+  typography,
+} from "@/theme";
 
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useRouter, Stack } from "expo-router";
-
-export default function Standings() {
+export default function StandingsIndex() {
   const router = useRouter();
+  const { selectedLeagueId } = useLeague();
+
+  const activeLeagueNights = useMemo(
+    () => getActiveLeagueNights(selectedLeagueId),
+    [selectedLeagueId]
+  );
+
+  const handleLeaguePress = (
+    league: LeagueNightData
+  ) => {
+    router.push({
+      pathname: "/(tabs)/standings/[league]",
+      params: {
+        league: league.routeLeagueId,
+      },
+    });
+  };
 
   return (
-    <>
-      {/* Navigation header */}
-      <Stack.Screen
-        options={{
-          title: "Standings",
-          headerStyle: { backgroundColor: "#000000ff" },
-          headerTintColor: "#fff",
-          headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-        }}
+    <AppScreen>
+      <ScreenHeader
+        title="Standings"
+        showBackButton
+        showLeagueSwitcher
       />
 
-      <View style={styles.container}>
-        {/* Screen header inside the view */}
-        <Text style={styles.screenHeader}>Standings</Text>
+      <ScreenContent gap="xl">
+        <View style={styles.overviewCard}>
+          <Text style={styles.overviewTitle}>
+            📊 Standings Overview
+          </Text>
 
-        {/* Buttons centered below header */}
-        <View style={styles.buttonsWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/standings/Sunday")
-            }
-          >
-            <Text style={styles.buttonText}>Sunday AM.YMCA</Text>
-          </TouchableOpacity>
+          <Text style={styles.overviewText}>
+            Select a league to view:
+          </Text>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/standings/Monday")
-            }
-          >
-            <Text style={styles.buttonText}>Monday PM.Berlin</Text>
-          </TouchableOpacity>
+          <View style={styles.bulletList}>
+            <Text style={styles.bulletText}>
+              • Current team records
+            </Text>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/standings/Tuesday")
-            }
-          >
-            <Text style={styles.buttonText}>Tuesday PM.YMCA</Text>
-          </TouchableOpacity>
+            <Text style={styles.bulletText}>
+              • Playoff positioning
+            </Text>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push("/standings/Wednesday")
-            }
-          >
-            <Text style={styles.buttonText}>Wednesday PM.Berlin</Text>
-          </TouchableOpacity>
+            <Text style={styles.bulletText}>
+              • Points for and against
+            </Text>
+
+            <Text style={styles.bulletText}>
+              • Season and playoff picture
+            </Text>
+          </View>
         </View>
-      </View>
-    </>
+
+        {activeLeagueNights.length > 0 ? (
+          <View style={styles.buttonList}>
+  {activeLeagueNights.map((league) => (
+    <View
+      key={league.id}
+      style={styles.buttonWrapper}
+    >
+      <LeagueNightButton
+        day={league.day}
+        period={league.period}
+        displayName={league.displayName}
+        badgeCount={league.badgeCount}
+        onPress={() =>
+          handleLeaguePress(league)
+        }
+      />
+    </View>
+  ))}
+</View>
+        ) : (
+          <View style={styles.emptyCard}>
+            <Text style={styles.emptyTitle}>
+              No active leagues
+            </Text>
+
+            <Text style={styles.emptyText}>
+              There are currently no active standings
+              available for this organization.
+            </Text>
+          </View>
+        )}
+      </ScreenContent>
+    </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
-  screenHeader: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "#250f74ff",
+  overviewCard: {
+  width: "78%",
+  maxWidth: 360,
+
+  alignSelf: "center",
+
+  padding: spacing.xl,
+
+  borderRadius: radius.lg,
+
+  backgroundColor: colors.surface,
+
+  borderWidth: 1,
+  borderColor: colors.border,
+
+  ...shadows.card,
+},
+
+  overviewTitle: {
+    color: colors.primary,
+    fontSize: typography.subheading,
+    fontWeight: "800",
     textAlign: "center",
-    marginTop: 20,
-    marginBottom: 40,
   },
-  buttonsWrapper: {
-    flex: 1,
-    justifyContent: "center", // keeps buttons in middle of remaining space
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#250f74ff",
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    borderRadius: 10,
-    marginBottom: 15,
-    width: "80%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
+
+  overviewText: {
+    marginTop: spacing.md,
+
+    color: colors.text,
+    fontSize: typography.body,
     fontWeight: "600",
+    textAlign: "center",
+  },
+
+  bulletList: {
+    marginTop: spacing.md,
+    alignItems: "center",
+    gap: spacing.sm,
+  },
+
+  bulletText: {
+    width: "100%",
+
+    color: colors.text,
+    fontSize: typography.body,
+    fontWeight: "500",
+    lineHeight: 22,
+    textAlign: "center",
+  },
+
+  buttonList: {
+  width: "100%",
+  alignItems: "center",
+  gap: spacing.xl,
+  paddingBottom: spacing.xl,
+},
+
+buttonWrapper: {
+  width: "78%",
+  maxWidth: 360,
+},
+
+  emptyCard: {
+    width: "100%",
+
+    padding: spacing.xl,
+
+    borderRadius: radius.lg,
+    backgroundColor: colors.surface,
+
+    ...shadows.soft,
+  },
+
+  emptyTitle: {
+    color: colors.primary,
+    fontSize: typography.subheading,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+
+  emptyText: {
+    marginTop: spacing.sm,
+
+    color: colors.textMuted,
+    fontSize: typography.caption,
+    lineHeight: 20,
+    textAlign: "center",
   },
 });
-

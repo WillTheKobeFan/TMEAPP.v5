@@ -1,37 +1,21 @@
-import React, { createContext, useContext, useState } from "react";
+// src/notifications/NotificationProvider.tsx
 
-// Define the types for our notification context
-type NotificationContextType = {
-  unreadCount: number;
-  markAllRead: () => void;
+import React from "react";
+
+type Props = {
+  children: React.ReactNode;
 };
 
-// Create the context
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
-);
+export type LeagueDay =
+  | "sunday"
+  | "monday"
+  | "tuesday"
+  | "wednesday";
 
-// Provider component
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  // Function to mark all notifications as read
-  const markAllRead = () => setUnreadCount(0);
-
-  return (
-    <NotificationContext.Provider value={{ unreadCount, markAllRead }}>
-      {children}
-    </NotificationContext.Provider>
-  );
+export function NotificationProvider({
+  children,
+}: Props) {
+  return <>{children}</>;
 }
 
-// Custom hook to use notifications
-export function useNotifications() {
-  const context = useContext(NotificationContext);
-  if (!context) {
-    throw new Error(
-      "useNotifications must be used within a NotificationProvider"
-    );
-  }
-  return context;
-}
+export default NotificationProvider;

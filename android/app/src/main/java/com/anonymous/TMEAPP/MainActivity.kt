@@ -1,4 +1,4 @@
-package com.anonymous.TMEAPP
+package com.anonymous.tmeapp
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

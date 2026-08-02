@@ -1,0 +1,111 @@
+FORMAT_VERSION: 2
+SESSION: Wednesday PM
+SCHEDULE_MODE: ANCHORED_WEEKLY
+ANCHOR_WEEK: WEEK 1 = (DATE: 2026-03-04)
+WEEK_INTERVAL_DAYS: 7
+
+====================================
+SEASON PHASE: REGULAR
+====================================
+
+WEEK 1 | DATE: 2026-03-04
+
+GAME | ID: wed_w1_g1 | TIME: 07:00 PM | wed_tA vs wed_tB | SCORE: 40-60 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w1_g2 | TIME: 08:00 PM | wed_tC vs wed_tD | SCORE: 66-65 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w1_g3 | TIME: 09:00 PM | wed_tE vs wed_tF | SCORE: 61-52 | WINNER: wed_tE | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tG | WEEK: 1
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_start | PRIORITY: high | MESSAGE: The regular season is underway.
+
+WEEK 2 
+
+GAME | ID: wed_w2_g1 | TIME: 07:00 PM | wed_tC vs wed_tG | SCORE: 58-45 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w2_g2 | TIME: 08:00 PM | wed_tD vs wed_tA | SCORE: 76-47 | WINNER: wed_tD | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w2_g3 | TIME: 09:00 PM | wed_tE vs wed_tB | SCORE: 75-44 | WINNER: wed_tE | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tF | WEEK: 2 
+
+WEEK 3  
+
+GAME | ID: wed_w3_g1 | TIME: 07:00 PM | wed_tG vs wed_tD | SCORE: 64-50 | WINNER: wed_tG | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w3_g2 | TIME: 08:00 PM | wed_tB vs wed_tC | SCORE: 67-57 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w3_g3 | TIME: 09:00 PM | wed_tA vs wed_tF | SCORE: 61-46 | WINNER: wed_tA | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tE | WEEK: 3 
+
+WEEK 4 
+
+GAME | ID: wed_w4_g1 | TIME: 07:00 PM | wed_tA vs wed_tG | SCORE: 68-37 | WINNER: wed_tA | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w4_g2 | TIME: 08:00 PM | wed_tC vs wed_tE | SCORE: 58-54 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w4_g3 | TIME: 09:00 PM | wed_tF vs wed_tD | SCORE: 74-53 | WINNER: wed_tF | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tB | WEEK: 4 
+
+WEEK 5 
+
+GAME | ID: wed_w5_g1 | TIME: 07:00 PM | wed_tB vs wed_tD | SCORE: 108-76 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w5_g2 | TIME: 08:00 PM | wed_tF vs wed_tG | SCORE: 83-57 | WINNER: wed_tF | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w5_g3 | TIME: 09:00 PM | wed_tE vs wed_tA | SCORE: 62-45 | WINNER: wed_tE | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tC | WEEK: 5 
+
+ANNOUNCEMENT | PHASE: regular | TYPE: registration | PRIORITY: high | MESSAGE: Registration is due for next season by Week 6.
+
+WEEK 6 
+
+GAME | ID: wed_w6_g1 | TIME: 07:00 PM | wed_tB vs wed_tF | SCORE: 79-64 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w6_g2 | TIME: 08:00 PM | wed_tC vs wed_tA | SCORE: 73-53 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w6_g3 | TIME: 09:00 PM | wed_tE vs wed_tG | SCORE: 77-38 | WINNER: wed_tE | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tD | WEEK: 6 
+
+WEEK 7 
+
+GAME | ID: wed_w7_g1 | TIME: 07:00 PM | wed_tC vs wed_tF | SCORE: 50-45 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w7_g2 | TIME: 08:00 PM | wed_tB vs wed_tG | SCORE: 88-57 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w7_g3 | TIME: 09:00 PM | wed_tE vs wed_tD | SCORE: 59-54 | WINNER: wed_tE | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tA | WEEK: 7
+
+WEEK 8 
+
+GAME | ID: wed_w8_g1 | TIME: 07:00 PM | wed_tA vs wed_tB | SCORE: 32-97 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w8_g2 | TIME: 08:00 PM | wed_tC vs wed_tD | SCORE: 70-38 | WINNER: wed_tC | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w8_g3 | TIME: 09:00 PM | wed_tF vs wed_tE | SCORE: 55-51 | WINNER: wed_tF | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tG | WEEK: 8
+
+WEEK 9 
+
+GAME | ID: wed_w9_g1 | TIME: 07:00 PM | wed_tD vs wed_tG | SCORE: 69-56 | WINNER: wed_tD | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w9_g2 | TIME: 08:00 PM | wed_tB vs wed_tF | SCORE: 61-48 | WINNER: wed_tB | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tA | WEEK: 9  
+BYE | TEAM: wed_tC | WEEK: 9
+BYE | TEAM: wed_tE | WEEK: 9
+
+WEEK 10 
+
+GAME | ID: wed_w10_g1 | TIME: 07:00 PM | wed_tA vs wed_tC | SCORE: 57-45 | WINNER: wed_tA | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+GAME | ID: wed_w10_g2 | TIME: 08:00 PM | wed_tE vs wed_tG | SCORE: 44-54 | WINNER: wed_tG | STATUS: completed | TYPE: regular | RESULT_TYPE: null
+
+BYE | TEAM: wed_tB | WEEK: 10
+BYE | TEAM: wed_tD | WEEK: 10
+BYE | TEAM: wed_tF | WEEK: 10
+
+ANNOUNCEMENT | PHASE: regular | TYPE: season_end | PRIORITY: high | MESSAGE: The regular season has concluded. Playoffs are expected to begin soon. 
+
+====================================
+SEASON PHASE: PLAYOFFS
+====================================
+
+WEEK 11 
+
+GAME | ID: wed_w11_g1 | TIME: 07:00 PM | seed1: wed_tB vs seed4: wed_tA | SCORE: 74-50 | WINNER: wed_tB | STATUS: completed | TYPE: playoff | RESULT_TYPE: null | ROUND: semifinal
+GAME | ID: wed_w11_g2 | TIME: 08:00 PM | seed2: wed_tC vs seed3: wed_tE | SCORE: 30-59 | WINNER: wed_tE | STATUS: completed | TYPE: playoff | RESULT_TYPE: null | ROUND: semifinal
+GAME | ID: wed_w11_g3 | TIME: 09:00 PM | winner: wed_w11_g1 vs winner: wed_w11_g2 | SCORE: 48-46 | WINNER: wed_tB | STATUS: completed | TYPE: playoff | RESULT_TYPE: pending | ROUND: championship
+
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Playoffs Semi-Finals & Championship
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Playoff teams please bring $35 per GAME for ref fees
+ANNOUNCEMENT | TYPE: playoffs | PRIORITY: high | MESSAGE: 🏆 Winning team please stay for Championship photo
