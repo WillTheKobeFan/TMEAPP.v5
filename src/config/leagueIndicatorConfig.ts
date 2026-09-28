@@ -1,12 +1,21 @@
-
 // src/config/leagueIndicatorConfig.ts
 
 import type { ImageSourcePropType } from "react-native";
 
-export type LeagueIndicatorId = "tme" | "pickup" | "taj";
+export type OrganizationId =
+  | "tme"
+  | "pickup"
+  | "taj";
 
-export type LeagueIndicatorData = {
-  id: LeagueIndicatorId;
+/**
+ * Backward-compatible alias.
+ * Older files can continue using LeagueIndicatorId
+ * while newer files use OrganizationId.
+ */
+export type LeagueIndicatorId = OrganizationId;
+
+export type OrganizationIndicatorData = {
+  id: OrganizationId;
   name: string;
   shortName: string;
   logo?: ImageSourcePropType;
@@ -14,9 +23,15 @@ export type LeagueIndicatorData = {
   accentColor: string;
 };
 
-export const leagueIndicatorConfig: Record<
-  LeagueIndicatorId,
-  LeagueIndicatorData
+/**
+ * Backward-compatible alias.
+ */
+export type LeagueIndicatorData =
+  OrganizationIndicatorData;
+
+export const organizationIndicatorConfig: Record<
+  OrganizationId,
+  OrganizationIndicatorData
 > = {
   tme: {
     id: "tme",
@@ -41,32 +56,63 @@ export const leagueIndicatorConfig: Record<
     name: "Taj Hill Hoops",
     shortName: "THH",
 
-    // Add the Taj Hill logo here later:
+    // Add the Taj Hill Hoops logo later:
     // logo: require("../../assets/logos/taj.png"),
 
-    logo: undefined,
     fallbackIcon: "🏀",
     accentColor: "#250F74",
   },
 };
 
-export const DEFAULT_LEAGUE_INDICATOR_ID: LeagueIndicatorId = "tme";
+/**
+ * Backward-compatible config name.
+ */
+export const leagueIndicatorConfig =
+  organizationIndicatorConfig;
 
-export function isLeagueIndicatorId(
+export const DEFAULT_ORGANIZATION_ID: OrganizationId =
+  "tme";
+
+/**
+ * Backward-compatible default name.
+ */
+export const DEFAULT_LEAGUE_INDICATOR_ID =
+  DEFAULT_ORGANIZATION_ID;
+
+export function isOrganizationId(
   value: unknown
-): value is LeagueIndicatorId {
+): value is OrganizationId {
   return (
     typeof value === "string" &&
-    Object.prototype.hasOwnProperty.call(leagueIndicatorConfig, value)
+    Object.prototype.hasOwnProperty.call(
+      organizationIndicatorConfig,
+      value
+    )
   );
 }
 
-export function getLeagueIndicatorData(
-  leagueId: unknown
-): LeagueIndicatorData {
-  if (isLeagueIndicatorId(leagueId)) {
-    return leagueIndicatorConfig[leagueId];
+/**
+ * Backward-compatible helper.
+ */
+export const isLeagueIndicatorId =
+  isOrganizationId;
+
+export function getOrganizationIndicatorData(
+  organizationId: unknown
+): OrganizationIndicatorData {
+  if (isOrganizationId(organizationId)) {
+    return organizationIndicatorConfig[
+      organizationId
+    ];
   }
 
-  return leagueIndicatorConfig[DEFAULT_LEAGUE_INDICATOR_ID];
+  return organizationIndicatorConfig[
+    DEFAULT_ORGANIZATION_ID
+  ];
 }
+
+/**
+ * Backward-compatible helper.
+ */
+export const getLeagueIndicatorData =
+  getOrganizationIndicatorData;

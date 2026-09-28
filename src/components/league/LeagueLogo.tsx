@@ -3,6 +3,7 @@
 import React from "react";
 import {
   Image,
+  StyleProp,
   StyleSheet,
   Text,
   View,
@@ -19,7 +20,7 @@ type LeagueLogoProps = {
   leagueId: LeagueIndicatorId;
   size?: number;
   imageScale?: number;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   showBackground?: boolean;
 };
 
@@ -32,8 +33,15 @@ export default function LeagueLogo({
 }: LeagueLogoProps) {
   const league = getLeagueIndicatorData(leagueId);
 
+  const fallbackContent =
+    league.fallbackIcon ??
+    league.shortName?.charAt(0) ??
+    "?";
+
   return (
     <View
+      accessibilityRole="image"
+      accessibilityLabel={`${league.name} logo`}
       style={[
         styles.container,
         {
@@ -58,11 +66,17 @@ export default function LeagueLogo({
         />
       ) : (
         <Text
-          style={{
-            fontSize: size * 0.56,
-          }}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.65}
+          style={[
+            styles.fallbackText,
+            {
+              fontSize: size * 0.56,
+            },
+          ]}
         >
-          {league.fallbackIcon}
+          {fallbackContent}
         </Text>
       )}
     </View>
@@ -74,5 +88,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
+  },
+
+  fallbackText: {
+    color: colors.primary,
+    fontWeight: "800",
+    textAlign: "center",
+    includeFontPadding: false,
   },
 });

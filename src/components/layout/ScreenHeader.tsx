@@ -2,219 +2,197 @@
 
 import React, { ReactNode } from "react";
 import {
-Pressable,
-StyleSheet,
-Text,
-View,
-ViewStyle,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
 import LeagueSwitcher from "@/components/league/LeagueSwitcher";
 import {
-colors,
-shadows,
-spacing,
-typography,
+  colors,
+  radius,
+  shadows,
+  sizes,
+  spacing,
+  typography,
 } from "@/theme";
 
 type ScreenHeaderProps = {
-title: string;
-showBackButton?: boolean;
-showLeagueSwitcher?: boolean;
-onBackPress?: () => void;
-rightContent?: ReactNode;
-style?: ViewStyle;
-backLabel?: string;
+  title: string;
+  showBackButton?: boolean;
+  showLeagueSwitcher?: boolean;
+  onBackPress?: () => void;
+  rightContent?: ReactNode;
+  style?: StyleProp<ViewStyle>;
+  backLabel?: string;
 };
 
 export default function ScreenHeader({
-title,
-showBackButton = true,
-showLeagueSwitcher = true,
-onBackPress,
-rightContent,
-style,
-backLabel = "Back",
+  title,
+  showBackButton = true,
+  showLeagueSwitcher = true,
+  onBackPress,
+  rightContent,
+  style,
+  backLabel = "Back",
 }: ScreenHeaderProps) {
-const handleBackPress = () => {
-if (onBackPress) {
-onBackPress();
-return;
-}
+  const handleBackPress = () => {
+    if (onBackPress) {
+      onBackPress();
+      return;
+    }
 
-if (router.canGoBack()) {
-  router.back();
-  return;
-}
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
 
-router.replace("/");
+    router.replace("/");
+  };
 
-};
+  const renderedRightContent =
+    rightContent ??
+    (showLeagueSwitcher ? <LeagueSwitcher /> : null);
 
-const renderedRightContent =
-rightContent ??
-(showLeagueSwitcher ? <LeagueSwitcher /> : null);
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.sideContainer}>
+        {showBackButton ? (
+          <View style={styles.backControl}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={backLabel}
+              onPress={handleBackPress}
+              hitSlop={10}
+              style={({ pressed }) => [
+                styles.backButton,
+                pressed && styles.pressed,
+              ]}
+            >
+              <Ionicons
+                name="arrow-back"
+                size={26}
+                color={colors.primary}
+              />
+            </Pressable>
 
-return (
-<View style={[styles.container, style]}>
-<View style={styles.leftSide}>
-{showBackButton ? (
-<View style={styles.backControl}>
-<Pressable
-accessibilityRole="button"
-accessibilityLabel="Go back"
-onPress={handleBackPress}
-hitSlop={10}
-style={({ pressed }) => [
-styles.backButton,
-pressed && styles.pressed,
-]}
->
-<Ionicons name="arrow-back" size={26} color={colors.primary} />
-</Pressable>
+            <Text numberOfLines={1} style={styles.backText}>
+              {backLabel}
+            </Text>
+          </View>
+        ) : null}
+      </View>
 
+      <View style={styles.titleContainer}>
         <Text
-          numberOfLines={1}
-          style={styles.backText}
+          numberOfLines={2}
+          adjustsFontSizeToFit
+          minimumFontScale={0.68}
+          style={styles.title}
         >
-          {backLabel}
+          {title}
         </Text>
       </View>
-    ) : null}
-  </View>
 
-  <View style={styles.titleContainer}>
-    <Text
-      numberOfLines={2}
-      adjustsFontSizeToFit
-      minimumFontScale={0.62}
-      style={styles.title}
-    >
-      {title}
-    </Text>
-  </View>
-
-  <View style={styles.rightSide}>
-    {renderedRightContent}
-  </View>
-</View>
-
-);
+      <View style={[styles.sideContainer, styles.rightSide]}>
+        {renderedRightContent}
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-container: {
-width: "100%",
-minHeight: 104,
+  container: {
+    width: "100%",
+    minHeight: sizes.headerHeight,
 
-flexDirection: "row",
-alignItems: "flex-start",
+    flexDirection: "row",
+    alignItems: "flex-start",
 
-paddingHorizontal: spacing.md,
-paddingTop: spacing.md,
-paddingBottom: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
 
-marginBottom: spacing.lg,
+    backgroundColor: colors.surface,
 
-backgroundColor: colors.surface,
-borderRadius: 0,
+    ...shadows.header,
+  },
 
-...shadows.header,
+  sideContainer: {
+    width: sizes.headerSideWidth,
+    minHeight: sizes.headerHeight - spacing.md,
 
-},
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
 
-leftSide: {
-width: 104,
-minHeight: 76,
+  rightSide: {
+    alignItems: "flex-end",
+  },
 
-alignItems: "flex-start",
-justifyContent: "flex-start",
+  titleContainer: {
+    flex: 1,
+    minWidth: 0,
+    minHeight: sizes.headerHeight - spacing.md,
 
-paddingLeft: 16,
+    alignItems: "center",
+    justifyContent: "center",
 
-},
+    paddingHorizontal: spacing.sm,
+    paddingBottom: spacing.sm,
+  },
 
-titleContainer: {
-flex: 1,
-minWidth: 0,
-minHeight: 76,
+  title: {
+    width: "100%",
 
-alignItems: "center",
-justifyContent: "center",
+    color: colors.primary,
+    fontSize: typography.title,
+    fontWeight: "800",
+    textAlign: "center",
 
-paddingHorizontal: spacing.xs,
-paddingBottom: 12,
+    includeFontPadding: false,
+  },
 
-},
+  backControl: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
 
-title: {
-width: "100%",
+  backButton: {
+    width: sizes.backButton,
+    height: sizes.backButton,
+    borderRadius: radius.pill,
 
-color: colors.primary,
-fontSize: typography.title,
-fontWeight: "800",
-textAlign: "center",
+    alignItems: "center",
+    justifyContent: "center",
 
-includeFontPadding: false,
+    backgroundColor: colors.surface,
 
-},
+    borderWidth: 1,
+    borderColor: colors.border,
 
-rightSide: {
-width: 104,
-minHeight: 76,
+    ...shadows.navigationButton,
+  },
 
-alignItems: "flex-end",
-justifyContent: "flex-start",
+  backText: {
+    maxWidth: sizes.headerSideWidth,
+    marginTop: spacing.xs,
 
-},
+    color: colors.primary,
+    fontSize: typography.caption,
+    fontWeight: "700",
+    textAlign: "center",
 
-backControl: {
-alignItems: "center",
-justifyContent: "flex-start",
-},
+    includeFontPadding: false,
+  },
 
-backButton: {
-width: 48,
-height: 48,
-borderRadius: 24,
-
-alignItems: "center",
-justifyContent: "center",
-
-backgroundColor: colors.surface,
-
-borderWidth: 1,
-borderColor: "#E8E3F0",
-
-shadowColor: "#1C123D",
-shadowOffset: {
-  width: 0,
-  height: 4,
-},
-shadowOpacity: 0.13,
-shadowRadius: 8,
-
-elevation: 6,
-
-},
-
-backText: {
-maxWidth: 76,
-marginTop: 6,
-
-color: colors.primary,
-fontSize: typography.caption,
-fontWeight: "700",
-textAlign: "center",
-
-includeFontPadding: false,
-
-},
-
-pressed: {
-opacity: 0.72,
-transform: [{ scale: 0.95 }],
-},
+  pressed: {
+    opacity: 0.72,
+    transform: [{ scale: 0.95 }],
+  },
 });

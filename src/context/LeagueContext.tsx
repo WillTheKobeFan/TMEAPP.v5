@@ -9,20 +9,36 @@ import React, {
 } from "react";
 
 import {
-  DEFAULT_LEAGUE_INDICATOR_ID,
-  isLeagueIndicatorId,
-  LeagueIndicatorId,
+  DEFAULT_ORGANIZATION_ID,
+  isOrganizationId,
+  OrganizationId,
 } from "@/config/leagueIndicatorConfig";
 
 type LeagueContextValue = {
-  selectedLeagueId: LeagueIndicatorId;
-  setSelectedLeagueId: (leagueId: LeagueIndicatorId) => void;
-  selectLeague: (leagueId: unknown) => void;
+  selectedOrganizationId: OrganizationId;
+  setSelectedOrganizationId: (
+    organizationId: OrganizationId
+  ) => void;
+  selectOrganization: (
+    organizationId: unknown
+  ) => void;
+
+  /**
+   * Backward-compatible aliases.
+   */
+  selectedLeagueId: OrganizationId;
+  setSelectedLeagueId: (
+    organizationId: OrganizationId
+  ) => void;
+  selectLeague: (
+    organizationId: unknown
+  ) => void;
 };
 
-const LeagueContext = createContext<LeagueContextValue | undefined>(
-  undefined
-);
+const LeagueContext =
+  createContext<LeagueContextValue | undefined>(
+    undefined
+  );
 
 type LeagueProviderProps = {
   children: React.ReactNode;
@@ -31,29 +47,45 @@ type LeagueProviderProps = {
 export function LeagueProvider({
   children,
 }: LeagueProviderProps) {
-  const [selectedLeagueId, setSelectedLeagueId] =
-    useState<LeagueIndicatorId>(
-      DEFAULT_LEAGUE_INDICATOR_ID
-    );
+  const [
+    selectedOrganizationId,
+    setSelectedOrganizationId,
+  ] = useState<OrganizationId>(
+    DEFAULT_ORGANIZATION_ID
+  );
 
-  const selectLeague = useCallback((leagueId: unknown) => {
-    if (!isLeagueIndicatorId(leagueId)) {
-      console.warn(
-        `[LeagueContext] Invalid league ID: ${String(leagueId)}`
-      );
-      return;
-    }
+  const selectOrganization = useCallback(
+    (organizationId: unknown) => {
+      if (!isOrganizationId(organizationId)) {
+        console.warn(
+          `[LeagueContext] Invalid organization ID: ${String(
+            organizationId
+          )}`
+        );
 
-    setSelectedLeagueId(leagueId);
-  }, []);
+        return;
+      }
 
-  const value = useMemo(
+      setSelectedOrganizationId(organizationId);
+    },
+    []
+  );
+
+  const value = useMemo<LeagueContextValue>(
     () => ({
-      selectedLeagueId,
-      setSelectedLeagueId,
-      selectLeague,
+      selectedOrganizationId,
+      setSelectedOrganizationId,
+      selectOrganization,
+
+      selectedLeagueId: selectedOrganizationId,
+      setSelectedLeagueId:
+        setSelectedOrganizationId,
+      selectLeague: selectOrganization,
     }),
-    [selectedLeagueId, selectLeague]
+    [
+      selectedOrganizationId,
+      selectOrganization,
+    ]
   );
 
   return (

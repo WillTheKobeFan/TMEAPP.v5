@@ -1,7 +1,14 @@
 // src/theme/index.ts
 
 export { colors } from "./colors";
-export { spacing } from "./spacing";
+export { icons } from "./icons";
 export { radius } from "./radius";
 export { shadows } from "./shadows";
-export { typography } from "./typography";
+export { sizes } from "./sizes";
+export { spacing } from "./spacing";
+
+export {
+  typography,
+  fontWeights,
+  lineHeights,
+} from "./typography";

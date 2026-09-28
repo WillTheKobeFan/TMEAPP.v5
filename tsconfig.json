@@ -1,20 +1,26 @@
-// tsconfig.json 
-
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["src/*"],
-      "src/*": ["src/*"]
+      "@/*": ["./src/*"],
+      "src/*": ["./src/*"]
     },
     "strict": true
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "scripts/**/*.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/admin/game-operations"  ]
+  ],
+  "exclude": [
+    "node_modules",
+    "app-legacy",
+    "app-legacy/**",
+    "src/legacy",
+    "src/legacy/**"
+  ]
 }

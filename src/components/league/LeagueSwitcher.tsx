@@ -1,5 +1,6 @@
 // src/components/league/LeagueSwitcher.tsx
 
+import { Ionicons } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
 import {
   Modal,
@@ -8,7 +9,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 
 import {
   leagueIndicatorConfig,
@@ -19,6 +19,7 @@ import {
   colors,
   radius,
   shadows,
+  sizes,
   spacing,
   typography,
 } from "@/theme";
@@ -35,13 +36,20 @@ export default function LeagueSwitcher({
   const { selectedLeagueId, selectLeague } = useLeague();
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedLeague =
-    leagueIndicatorConfig[selectedLeagueId];
-
   const availableLeagues = useMemo(
     () => Object.values(leagueIndicatorConfig),
     []
   );
+
+  const fallbackLeague =
+    availableLeagues[0];
+
+  const selectedLeague =
+    leagueIndicatorConfig[selectedLeagueId] ??
+    fallbackLeague;
+
+  const resolvedSelectedLeagueId =
+    selectedLeague.id;
 
   const openMenu = () => {
     setIsOpen(true);
@@ -60,58 +68,54 @@ export default function LeagueSwitcher({
 
   return (
     <>
-      <View style={styles.triggerRow}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Switch league. Current league is ${selectedLeague.name}`}
-          onPress={openMenu}
-          style={({ pressed }) => [
-            styles.logoButton,
-            pressed && styles.pressed,
-          ]}
-        >
-          <LeagueLogo
-            leagueId={selectedLeagueId}
-            size={52}
-            imageScale={1.08}
-          />
-        </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Switch organization. Current organization is ${selectedLeague.name}`}
+        accessibilityHint="Opens the organization selection menu"
+        onPress={openMenu}
+        hitSlop={6}
+        style={({ pressed }) => [
+          styles.trigger,
+          pressed && styles.triggerPressed,
+        ]}
+      >
+        <LeagueLogo
+          leagueId={resolvedSelectedLeagueId}
+          size={sizes.headerLogo}
+          imageScale={1.08}
+        />
 
         {showLabel ? (
           <Text
             numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.75}
             style={styles.triggerLabel}
           >
             {selectedLeague.shortName}
           </Text>
         ) : null}
 
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Open league menu"
-          onPress={openMenu}
-          hitSlop={10}
-          style={({ pressed }) => [
-            styles.arrowButton,
-            pressed && styles.pressed,
-          ]}
-        >
+        <View style={styles.arrowContainer}>
           <Ionicons
             name="chevron-down"
-            size={24}
+            size={20}
             color={colors.primary}
           />
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
 
       <Modal
         visible={isOpen}
         transparent
         animationType="fade"
+        statusBarTranslucent
         onRequestClose={closeMenu}
       >
         <View style={styles.modalRoot}>
           <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Close organization selector"
             style={styles.backdrop}
             onPress={closeMenu}
           />
@@ -124,7 +128,7 @@ export default function LeagueSwitcher({
                 </Text>
 
                 <Text
-                  numberOfLines={1}
+                  numberOfLines={2}
                   style={styles.menuTitle}
                 >
                   {selectedLeague.name}
@@ -133,7 +137,7 @@ export default function LeagueSwitcher({
 
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel="Close league switcher"
+                accessibilityLabel="Close organization selector"
                 hitSlop={10}
                 onPress={closeMenu}
                 style={({ pressed }) => [
@@ -154,15 +158,16 @@ export default function LeagueSwitcher({
             <View style={styles.options}>
               {availableLeagues.map((league) => {
                 const isSelected =
-                  league.id === selectedLeagueId;
+                  league.id ===
+                  resolvedSelectedLeagueId;
 
                 return (
                   <Pressable
                     key={league.id}
-                    accessibilityRole="button"
+                    accessibilityRole="radio"
                     accessibilityLabel={`Select ${league.name}`}
                     accessibilityState={{
-                      selected: isSelected,
+                      checked: isSelected,
                     }}
                     onPress={() =>
                       handleSelectLeague(league.id)
@@ -179,16 +184,24 @@ export default function LeagueSwitcher({
                       <LeagueLogo
                         leagueId={league.id}
                         size={46}
-                        imageScale={1.25}
+                        imageScale={1.2}
                       />
                     </View>
 
                     <View style={styles.optionTextBlock}>
-                      <Text style={styles.optionName}>
+                      <Text
+                        numberOfLines={2}
+                        style={[
+                          styles.optionName,
+                          isSelected &&
+                            styles.selectedOptionName,
+                        ]}
+                      >
                         {league.name}
                       </Text>
 
                       <Text
+                        numberOfLines={1}
                         style={styles.optionShortName}
                       >
                         {league.shortName}
@@ -196,9 +209,7 @@ export default function LeagueSwitcher({
                     </View>
 
                     {isSelected ? (
-                      <View
-                        style={styles.selectedIcon}
-                      >
+                      <View style={styles.selectedIcon}>
                         <Ionicons
                           name="checkmark"
                           size={18}
@@ -208,7 +219,7 @@ export default function LeagueSwitcher({
                     ) : (
                       <Ionicons
                         name="chevron-forward"
-                        size={18}
+                        size={20}
                         color={colors.textMuted}
                       />
                     )}
@@ -224,69 +235,85 @@ export default function LeagueSwitcher({
 }
 
 const styles = StyleSheet.create({
-  triggerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    gap: spacing.sm,
-  },
+  trigger: {
+    minWidth: sizes.headerSideWidth,
+    minHeight: sizes.headerHeight - spacing.md,
 
-  logoButton: {
-    width: 62,
-    height: 62,
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: radius.pill,
-    backgroundColor: colors.surface,
-    ...shadows.card,
-  },
+    justifyContent: "flex-start",
 
-  arrowButton: {
-    width: 30,
-    height: 48,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: spacing.xs,
   },
 
   triggerLabel: {
-    maxWidth: 76,
-    color: colors.text,
-    fontSize: typography.caption,
+    maxWidth: sizes.headerSideWidth,
+    marginTop: spacing.xs,
+
+    color: colors.primary,
+    fontSize: typography.small,
     fontWeight: "700",
+    textAlign: "center",
+
+    includeFontPadding: false,
   },
 
-  pressed: {
+  arrowContainer: {
+    position: "absolute",
+    right: 0,
+    top: sizes.headerLogo / 2,
+
+    width: 24,
+    height: 24,
+
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  triggerPressed: {
     opacity: 0.72,
     transform: [{ scale: 0.97 }],
   },
 
+  pressed: {
+    opacity: 0.72,
+    transform: [{ scale: 0.96 }],
+  },
+
   modalRoot: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
+
+    paddingHorizontal: spacing.lg,
   },
 
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(15, 10, 30, 0.38)",
+    backgroundColor: "rgba(15, 10, 30, 0.42)",
   },
 
   menu: {
-    marginTop: 96,
-    marginHorizontal: spacing.lg,
+    width: "100%",
+    maxWidth: 620,
+    alignSelf: "center",
+
     padding: spacing.lg,
+
     borderRadius: radius.xl,
     backgroundColor: colors.surface,
+
     ...shadows.card,
   },
 
   menuHeader: {
     flexDirection: "row",
     alignItems: "center",
+
     gap: spacing.md,
   },
 
   menuTitleBlock: {
     flex: 1,
+    minWidth: 0,
   },
 
   menuEyebrow: {
@@ -298,23 +325,28 @@ const styles = StyleSheet.create({
 
   menuTitle: {
     marginTop: spacing.xs,
+
     color: colors.text,
     fontSize: typography.subheading,
     fontWeight: "800",
   },
 
   closeButton: {
-    width: 40,
-    height: 40,
+    width: sizes.touchTarget,
+    height: sizes.touchTarget,
+
     alignItems: "center",
     justifyContent: "center",
+
     borderRadius: radius.pill,
     backgroundColor: colors.primarySoft,
   },
 
   divider: {
     height: StyleSheet.hairlineWidth,
+
     marginVertical: spacing.lg,
+
     backgroundColor: colors.border,
   },
 
@@ -323,15 +355,20 @@ const styles = StyleSheet.create({
   },
 
   option: {
-    minHeight: 72,
+    minHeight: 76,
+
     flexDirection: "row",
     alignItems: "center",
+
     gap: spacing.md,
+
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.lg,
+
     backgroundColor: colors.surface,
   },
 
@@ -345,17 +382,21 @@ const styles = StyleSheet.create({
   },
 
   optionLogo: {
-    width: 50,
-    height: 50,
+    width: 52,
+    height: 52,
+
     alignItems: "center",
     justifyContent: "center",
+
     borderRadius: radius.pill,
     backgroundColor: colors.surface,
+
     overflow: "hidden",
   },
 
   optionTextBlock: {
     flex: 1,
+    minWidth: 0,
   },
 
   optionName: {
@@ -364,18 +405,25 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  selectedOptionName: {
+    color: colors.primary,
+  },
+
   optionShortName: {
-    marginTop: 2,
+    marginTop: spacing.xs,
+
     color: colors.textMuted,
     fontSize: typography.caption,
     fontWeight: "500",
   },
 
   selectedIcon: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
+
     alignItems: "center",
     justifyContent: "center",
+
     borderRadius: radius.pill,
     backgroundColor: colors.primary,
   },
