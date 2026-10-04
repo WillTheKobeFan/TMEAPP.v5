@@ -25,22 +25,15 @@ import {
 
 import { useLeague } from "@/context/LeagueContext";
 import { useTextSize } from "@/context/TextSizeContext";
-
-const COLORS = {
-  purple: "#250F74",
-  white: "#FFFFFF",
-  background: "#F8F7FB",
-  text: "#1E1B24",
-  muted: "#706B79",
-  border: "#E8E4ED",
-  lightPurple: "#F4F0FC",
-  overlay: "rgba(20, 13, 37, 0.42)",
-};
+import { useTheme } from "@/theme";
 
 const HEADER_SIDE_WIDTH = 88;
 const HEADER_ACTION_HEIGHT = 82;
 const HEADER_ICON_AREA_SIZE = 46;
 const HEADER_LABEL_SIZE = 12.5;
+
+const OVERLAY_COLOR = "rgba(0, 0, 0, 0.48)";
+const SHADOW_COLOR = "#000000";
 
 export type OrganizationId =
   | "tme"
@@ -115,19 +108,19 @@ const ORGANIZATIONS: OrganizationOption[] = [
     id: "tme",
     name: "TME Social Sports",
     shortName: "TME",
-    logo: require("../../../app/assets/logos/tme.png"),
+    logo: require("../../../assets/logos/tme.png"),
   },
   {
     id: "pickup",
     name: "Pickup Basketball USA",
     shortName: "Pickup",
-    logo: require("../../../app/assets/logos/pickup.png"),
+    logo: require("../../../assets/logos/pickup.png"),
   },
   {
     id: "taj",
     name: "Taj Hill Hoops",
     shortName: "THH",
-    logo: require("../../../app/assets/logos/taj.png"),
+    logo: require("../../../assets/logos/taj.png"),
   },
 ];
 
@@ -141,13 +134,19 @@ function isOrganizationId(
   );
 }
 
+type OrganizationLogoProps = {
+  organization: OrganizationOption;
+  size: number;
+  fallbackBackgroundColor: string;
+  fallbackTextColor: string;
+};
+
 function OrganizationLogo({
   organization,
   size,
-}: {
-  organization: OrganizationOption;
-  size: number;
-}) {
+  fallbackBackgroundColor,
+  fallbackTextColor,
+}: OrganizationLogoProps) {
   if (organization.logo) {
     return (
       <Image
@@ -169,6 +168,8 @@ function OrganizationLogo({
           width: size,
           height: size,
           borderRadius: size / 2,
+          backgroundColor:
+            fallbackBackgroundColor,
         },
       ]}
     >
@@ -180,6 +181,7 @@ function OrganizationLogo({
           styles.fallbackLogoText,
           {
             fontSize: size * 0.28,
+            color: fallbackTextColor,
           },
         ]}
       >
@@ -218,6 +220,7 @@ export default function ScreenLayout({
 }: ScreenLayoutProps) {
   const router = useRouter();
   const { textScale } = useTextSize();
+  const { theme } = useTheme();
 
   const rawLeagueContext =
     useLeague() as unknown as CompatibleLeagueContext;
@@ -251,8 +254,8 @@ export default function ScreenLayout({
     }, [selectedOrganizationId]);
 
   /*
-   * "circle" remains supported so older screens do not break.
-   * It now renders the same plain stacked control.
+   * "circle" remains supported for compatibility
+   * with older V1 screens.
    */
   const usesStackedBackButton =
     backButtonVariant === "stacked" ||
@@ -333,7 +336,7 @@ export default function ScreenLayout({
             <Ionicons
               name="arrow-back"
               size={32}
-              color={COLORS.purple}
+              color={theme.headerIcon}
             />
           </View>
 
@@ -347,6 +350,7 @@ export default function ScreenLayout({
                 fontSize:
                   HEADER_LABEL_SIZE *
                   textScale,
+                color: theme.headerText,
               },
             ]}
           >
@@ -367,7 +371,7 @@ export default function ScreenLayout({
         <Ionicons
           name="chevron-back"
           size={28}
-          color={COLORS.purple}
+          color={theme.headerIcon}
         />
 
         <Text
@@ -378,6 +382,7 @@ export default function ScreenLayout({
             styles.inlineBackText,
             {
               fontSize: 14 * textScale,
+              color: theme.headerText,
             },
           ]}
         >
@@ -388,15 +393,35 @@ export default function ScreenLayout({
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        {
+          backgroundColor:
+            theme.backgroundSecondary,
+        },
+      ]}
+    >
       <View
         style={[
           styles.screen,
+          {
+            backgroundColor:
+              theme.background,
+          },
           style,
         ]}
       >
         {/* STATIC HEADER */}
-        <View style={styles.header}>
+        <View
+          style={[
+            styles.header,
+            {
+              backgroundColor:
+                theme.surface,
+            },
+          ]}
+        >
           <View
             style={styles.leftHeaderSlot}
           >
@@ -420,6 +445,8 @@ export default function ScreenLayout({
                     titleFontSize *
                     1.06 *
                     textScale,
+
+                  color: theme.headerText,
                 },
                 titleStyle,
               ]}
@@ -451,14 +478,32 @@ export default function ScreenLayout({
                     styles.stackedHeaderIconArea
                   }
                 >
-                  <OrganizationLogo
-                    organization={
-                      selectedOrganization
-                    }
-                    size={
-                      HEADER_ICON_AREA_SIZE
-                    }
-                  />
+                  <View
+                    style={[
+                      styles.logoSafeArea,
+                      {
+                        backgroundColor:
+                          theme.logoSurface,
+                        borderColor:
+                          theme.logoBorder,
+                      },
+                    ]}
+                  >
+                    <OrganizationLogo
+                      organization={
+                        selectedOrganization
+                      }
+                      size={
+                        HEADER_ICON_AREA_SIZE - 8
+                      }
+                      fallbackBackgroundColor={
+                        theme.primarySoft
+                      }
+                      fallbackTextColor={
+                        theme.primary
+                      }
+                    />
+                  </View>
                 </View>
 
                 <Text
@@ -471,6 +516,7 @@ export default function ScreenLayout({
                       fontSize:
                         HEADER_LABEL_SIZE *
                         textScale,
+                      color: theme.headerText,
                     },
                   ]}
                 >
@@ -490,7 +536,13 @@ export default function ScreenLayout({
         {/* DYNAMIC MIDDLE CONTENT */}
         {scrollEnabled ? (
           <ScrollView
-            style={styles.scrollView}
+            style={[
+              styles.scrollView,
+              {
+                backgroundColor:
+                  theme.background,
+              },
+            ]}
             contentContainerStyle={[
               styles.scrollContent,
               {
@@ -514,6 +566,10 @@ export default function ScreenLayout({
           <View
             style={[
               styles.content,
+              {
+                backgroundColor:
+                  theme.background,
+              },
               contentStyle,
             ]}
           >
@@ -532,14 +588,18 @@ export default function ScreenLayout({
             }
           >
             <View
-              style={
-                styles.settingsShortcut
-              }
+              style={[
+                styles.settingsShortcut,
+                {
+                  backgroundColor:
+                    theme.buttonBackground,
+                },
+              ]}
             >
               <Ionicons
                 name="settings-sharp"
                 size={31}
-                color={COLORS.white}
+                color={theme.buttonText}
               />
             </View>
           </TouchableOpacity>
@@ -558,13 +618,25 @@ export default function ScreenLayout({
           }
         >
           <Pressable
-            style={styles.modalBackdrop}
+            style={[
+              styles.modalBackdrop,
+              {
+                backgroundColor:
+                  OVERLAY_COLOR,
+              },
+            ]}
             onPress={() =>
               setOrganizationModalOpen(false)
             }
           >
             <Pressable
-              style={styles.modalCard}
+              style={[
+                styles.modalCard,
+                {
+                  backgroundColor:
+                    theme.card,
+                },
+              ]}
               onPress={(event) =>
                 event.stopPropagation()
               }
@@ -584,6 +656,8 @@ export default function ScreenLayout({
                         fontSize:
                           11.5 *
                           textScale,
+                        color:
+                          theme.textMuted,
                       },
                     ]}
                   >
@@ -597,6 +671,7 @@ export default function ScreenLayout({
                         fontSize:
                           20 *
                           textScale,
+                        color: theme.text,
                       },
                     ]}
                   >
@@ -615,22 +690,30 @@ export default function ScreenLayout({
                       false,
                     )
                   }
-                  style={
-                    styles.closeButton
-                  }
+                  style={[
+                    styles.closeButton,
+                    {
+                      backgroundColor:
+                        theme.primarySoft,
+                    },
+                  ]}
                 >
                   <Ionicons
                     name="close"
                     size={25}
-                    color={COLORS.text}
+                    color={theme.text}
                   />
                 </TouchableOpacity>
               </View>
 
               <View
-                style={
-                  styles.modalDivider
-                }
+                style={[
+                  styles.modalDivider,
+                  {
+                    backgroundColor:
+                      theme.border,
+                  },
+                ]}
               />
 
               <View
@@ -663,9 +746,17 @@ export default function ScreenLayout({
                         }
                         style={[
                           styles.organizationRow,
+                          {
+                            borderColor:
+                              selected
+                                ? theme.primary
+                                : theme.border,
 
-                          selected &&
-                            styles.organizationRowSelected,
+                            backgroundColor:
+                              selected
+                                ? theme.primarySoft
+                                : theme.surface,
+                          },
                         ]}
                       >
                         <View
@@ -678,6 +769,12 @@ export default function ScreenLayout({
                               organization
                             }
                             size={48}
+                            fallbackBackgroundColor={
+                              theme.primarySoft
+                            }
+                            fallbackTextColor={
+                              theme.primary
+                            }
                           />
                         </View>
 
@@ -693,9 +790,12 @@ export default function ScreenLayout({
                                 fontSize:
                                   15 *
                                   textScale,
+
+                                color:
+                                  selected
+                                    ? theme.primary
+                                    : theme.text,
                               },
-                              selected &&
-                                styles.selectedOrganizationName,
                             ]}
                           >
                             {
@@ -710,6 +810,9 @@ export default function ScreenLayout({
                                 fontSize:
                                   12 *
                                   textScale,
+
+                                color:
+                                  theme.textMuted,
                               },
                             ]}
                           >
@@ -721,15 +824,19 @@ export default function ScreenLayout({
 
                         {selected ? (
                           <View
-                            style={
-                              styles.selectedCheck
-                            }
+                            style={[
+                              styles.selectedCheck,
+                              {
+                                backgroundColor:
+                                  theme.primary,
+                              },
+                            ]}
                           >
                             <Ionicons
                               name="checkmark"
                               size={21}
                               color={
-                                COLORS.white
+                                theme.buttonText
                               }
                             />
                           </View>
@@ -738,7 +845,7 @@ export default function ScreenLayout({
                             name="chevron-forward"
                             size={22}
                             color={
-                              COLORS.muted
+                              theme.textMuted
                             }
                           />
                         )}
@@ -758,14 +865,11 @@ export default function ScreenLayout({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.white,
   },
 
   screen: {
     flex: 1,
     minHeight: 0,
-    backgroundColor:
-      COLORS.background,
   },
 
   header: {
@@ -778,11 +882,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
 
-    backgroundColor: COLORS.white,
-
     zIndex: 30,
 
-    shadowColor: "#000000",
+    shadowColor: SHADOW_COLOR,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -831,17 +933,11 @@ const styles = StyleSheet.create({
     width: "100%",
     flexShrink: 1,
 
-    color: COLORS.purple,
-
     fontWeight: "900",
     textAlign: "center",
     letterSpacing: -0.7,
   },
 
-  /*
-   * Both stacked controls share this exact box.
-   * Arrow and logo therefore align vertically.
-   */
   stackedHeaderAction: {
     width: HEADER_SIDE_WIDTH,
     minHeight: HEADER_ACTION_HEIGHT,
@@ -850,10 +946,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  /*
-   * Both the arrow and organization logo occupy
-   * the same 46×46 icon area.
-   */
   stackedHeaderIconArea: {
     width: HEADER_ICON_AREA_SIZE,
     height: HEADER_ICON_AREA_SIZE,
@@ -862,16 +954,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  /*
-   * Both labels use the same width, top margin,
-   * size, weight and center alignment.
-   */
   stackedHeaderLabel: {
     width: "100%",
 
     marginTop: 4,
-
-    color: COLORS.purple,
 
     fontWeight: "800",
     textAlign: "center",
@@ -891,9 +977,20 @@ const styles = StyleSheet.create({
 
     marginLeft: 1,
 
-    color: COLORS.purple,
-
     fontWeight: "800",
+  },
+
+  logoSafeArea: {
+    width: HEADER_ICON_AREA_SIZE,
+    height: HEADER_ICON_AREA_SIZE,
+
+    borderWidth: 1,
+    borderRadius: 10,
+
+    alignItems: "center",
+    justifyContent: "center",
+
+    overflow: "hidden",
   },
 
   fallbackLogo: {
@@ -901,15 +998,10 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-
-    backgroundColor:
-      COLORS.lightPurple,
   },
 
   fallbackLogoText: {
     width: "100%",
-
-    color: COLORS.purple,
 
     fontWeight: "900",
     textAlign: "center",
@@ -940,7 +1032,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 28,
 
-    shadowColor: "#000000",
+    shadowColor: SHADOW_COLOR,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -958,8 +1050,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-
-    backgroundColor: COLORS.purple,
   },
 
   modalBackdrop: {
@@ -969,8 +1059,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-
-    backgroundColor: COLORS.overlay,
   },
 
   modalCard: {
@@ -979,11 +1067,9 @@ const styles = StyleSheet.create({
 
     borderRadius: 25,
 
-    backgroundColor: COLORS.white,
-
     overflow: "hidden",
 
-    shadowColor: "#000000",
+    shadowColor: SHADOW_COLOR,
     shadowOffset: {
       width: 0,
       height: 8,
@@ -1009,16 +1095,12 @@ const styles = StyleSheet.create({
   },
 
   modalEyebrow: {
-    color: COLORS.muted,
-
     fontWeight: "800",
     letterSpacing: 1.1,
   },
 
   modalTitle: {
     marginTop: 5,
-
-    color: COLORS.text,
 
     fontWeight: "900",
   },
@@ -1031,9 +1113,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-
-    backgroundColor:
-      COLORS.lightPurple,
   },
 
   modalDivider: {
@@ -1041,8 +1120,6 @@ const styles = StyleSheet.create({
       StyleSheet.hairlineWidth,
 
     marginHorizontal: 20,
-
-    backgroundColor: COLORS.border,
   },
 
   organizationList: {
@@ -1058,19 +1135,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
 
     borderWidth: 1.2,
-    borderColor: COLORS.border,
     borderRadius: 19,
 
     flexDirection: "row",
     alignItems: "center",
-
-    backgroundColor: COLORS.white,
-  },
-
-  organizationRowSelected: {
-    borderColor: COLORS.purple,
-    backgroundColor:
-      COLORS.lightPurple,
   },
 
   modalLogoContainer: {
@@ -1091,18 +1159,11 @@ const styles = StyleSheet.create({
   },
 
   organizationName: {
-    color: COLORS.text,
     fontWeight: "800",
-  },
-
-  selectedOrganizationName: {
-    color: COLORS.purple,
   },
 
   organizationShortName: {
     marginTop: 3,
-
-    color: COLORS.muted,
 
     fontWeight: "500",
   },
@@ -1115,7 +1176,5 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-
-    backgroundColor: COLORS.purple,
   },
 });

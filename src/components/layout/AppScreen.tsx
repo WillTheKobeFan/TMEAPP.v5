@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { colors, spacing } from "@/theme";
+import { spacing, useTheme } from "@/theme";
 
 type AppScreenProps = {
   children: ReactNode;
@@ -28,6 +28,8 @@ export default function AppScreen({
   contentContainerStyle,
   style,
 }: AppScreenProps) {
+  const { theme } = useTheme();
+
   const content = scrollable ? (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -36,18 +38,35 @@ export default function AppScreen({
         styles.scrollContent,
         contentContainerStyle,
       ]}
+      style={{
+        backgroundColor: theme.background,
+      }}
     >
       {children}
     </ScrollView>
   ) : (
-    <View style={[styles.content, contentContainerStyle]}>
+    <View
+      style={[
+        styles.content,
+        {
+          backgroundColor: theme.background,
+        },
+        contentContainerStyle,
+      ]}
+    >
       {children}
     </View>
   );
 
   const screen = (
     <SafeAreaView
-      style={[styles.safeArea, style]}
+      style={[
+        styles.safeArea,
+        {
+          backgroundColor: theme.background,
+        },
+        style,
+      ]}
       edges={["top"]}
     >
       {content}
@@ -60,7 +79,12 @@ export default function AppScreen({
 
   return (
     <KeyboardAvoidingView
-      style={styles.keyboardContainer}
+      style={[
+        styles.keyboardContainer,
+        {
+          backgroundColor: theme.background,
+        },
+      ]}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       {screen}
@@ -75,7 +99,6 @@ const styles = StyleSheet.create({
 
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background,
   },
 
   scrollContent: {

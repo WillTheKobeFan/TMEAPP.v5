@@ -1,17 +1,35 @@
 // app/(tabs)/standings.tsx
 
-import { Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-export default function StandingsRoute() {
+import ScreenLayout from "@/components/layout/ScreenLayout";
+import { AppTheme, useTheme } from "@/theme";
+
+export default function Standings() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text>Standings</Text>
-    </View>
+    <ScreenLayout title="Standings" showBackButton>
+      <View style={styles.container}>
+        <Text style={styles.title}>Standings</Text>
+      </View>
+    </ScreenLayout>
   );
 }
+
+const createStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.background,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: "700",
+      color: theme.text,
+    },
+  });

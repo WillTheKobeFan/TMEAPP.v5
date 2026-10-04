@@ -12,3 +12,15 @@ export {
   fontWeights,
   lineHeights,
 } from "./typography";
+
+export {
+  ThemeProvider,
+  useTheme,
+  lightTheme,
+  darkTheme,
+} from "./ThemeProvider";
+
+export type {
+  AppTheme,
+  ThemeMode,
+} from "./ThemeProvider";

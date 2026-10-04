@@ -1,24 +1,35 @@
-import { Text, View } from "react-native";
-import { useMembership } from "src/context/MembershipContext";
+// app/(tabs)/schedule.tsx
 
-export default function ScheduleRoute() {
-  const { activeMembership } = useMembership();
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-  console.log(
-    "ACTIVE MEMBERSHIP:",
-    activeMembership.organizationId,
-    activeMembership.roles
-  );
+import ScreenLayout from "@/components/layout/ScreenLayout";
+import { AppTheme, useTheme } from "@/theme";
+
+export default function Schedule() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text>Schedule</Text>
-    </View>
+    <ScreenLayout title="Schedule" showBackButton>
+      <View style={styles.container}>
+        <Text style={styles.title}>Schedule</Text>
+      </View>
+    </ScreenLayout>
   );
 }
+
+const createStyles = (theme: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.background,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: "700",
+      color: theme.text,
+    },
+  });

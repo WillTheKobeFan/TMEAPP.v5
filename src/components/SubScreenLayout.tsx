@@ -5,7 +5,7 @@ import React from "react";
 
 import ScreenLayout, {
   ScreenLayoutProps,
-} from "@/components/ScreenLayout";
+} from "@/components/layout/ScreenLayout";
 
 export type SubScreenLayoutProps = Omit<
   ScreenLayoutProps,

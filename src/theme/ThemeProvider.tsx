@@ -1,60 +1,126 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+// src/theme/ThemeProvider.tsx
 
-// ----------------------------
-// Updated light and dark themes
-// ----------------------------
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+
+export type ThemeMode = "light" | "dark";
+
+const sharedColors = {
+  primary: "#250F74",
+  primarySoft: "#EEEAFB",
+
+  success: "#168A45",
+  warning: "#D97706",
+  danger: "#C73535",
+
+  transparent: "transparent",
+};
+
 export const lightTheme = {
-  background: "#F7F7F5",          // soft off-white / eggshell
-  backgroundSecondary: "#FFFFFF", // cards / panels
-  text: "#000000",
-  buttonBackground: "#250f74",
-  buttonText: "#ffffff",
-  // add any other colors you use
-};
+  ...sharedColors,
 
-export const darkTheme = {
-  background: "#000000",
-  backgroundSecondary: "#1A1A1A",
-  text: "#FFFFFF",
-  buttonBackground: "#250f74",
+  background: "#F7F5FC",
+  backgroundSecondary: "#FFFFFF",
+
+  surface: "#FFFFFF",
+  card: "#FFFFFF",
+
+  text: "#17131F",
+  textMuted: "#716B7A",
+
+  border: "#E5E0EC",
+
+  buttonBackground: "#250F74",
   buttonText: "#FFFFFF",
-  // add any other colors you use
+
+  navBackground: "#250F74",
+  navText: "#FFFFFF",
+
+  headerText: "#250F74",
+  headerIcon: "#250F74",
+
+  logoSurface: "#FFFFFF",
+  logoBorder: "#E5E0EC",
 };
 
-// ----------------------------
-// Theme Context & Provider
-// ----------------------------
-type ThemeType = "light" | "dark";
+export const darkTheme: typeof lightTheme = {
+  ...sharedColors,
+
+  background: "#0D0D0F",
+  backgroundSecondary: "#171719",
+
+  surface: "#171719",
+  card: "#1D1D20",
+
+  text: "#F7F7F8",
+  textMuted: "#A9A6AE",
+
+  border: "#343238",
+
+  buttonBackground: "#250F74",
+  buttonText: "#FFFFFF",
+
+  navBackground: "#250F74",
+  navText: "#FFFFFF",
+
+  headerText: "#FFFFFF",
+  headerIcon: "#FFFFFF",
+
+  // Branding stays unchanged in Dark Mode.
+  // SportSync protects logos with a neutral dark surface.
+  logoSurface: "#242427",
+  logoBorder: "#4A474F",
+};
+
+export type AppTheme = typeof lightTheme;
 
 type ThemeContextType = {
-  theme: typeof lightTheme; // same shape as your theme objects
-  themeMode: ThemeType;
+  theme: AppTheme;
+  themeMode: ThemeMode;
+  isDark: boolean;
+  setThemeMode: (mode: ThemeMode) => void;
   toggleTheme: () => void;
 };
 
-const ThemeContext = createContext<ThemeContextType | null>(null);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [themeMode, setThemeMode] = useState<ThemeType>("light");
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [themeMode, setThemeMode] = useState<ThemeMode>("light");
 
-  const toggleTheme = () => {
-    setThemeMode((prev) => (prev === "light" ? "dark" : "light"));
-  };
+  const theme = themeMode === "dark" ? darkTheme : lightTheme;
 
-  const theme = themeMode === "light" ? lightTheme : darkTheme;
+  const value = useMemo(
+    () => ({
+      theme,
+      themeMode,
+      isDark: themeMode === "dark",
+      setThemeMode,
+      toggleTheme: () =>
+        setThemeMode((current) =>
+          current === "light" ? "dark" : "light"
+        ),
+    }),
+    [theme, themeMode]
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, themeMode, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
-};
+}
 
-// ----------------------------
-// Hook to use theme
-// ----------------------------
-export const useTheme = () => {
+export function useTheme() {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within ThemeProvider");
+
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
+
   return context;
-};
+}
