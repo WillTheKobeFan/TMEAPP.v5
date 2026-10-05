@@ -11,7 +11,7 @@ export default function Inbox() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="Inbox" showBackButton>
+    <ScreenLayout title="Inbox">
       <View style={styles.container}>
         <Text style={styles.title}>Inbox</Text>
       </View>

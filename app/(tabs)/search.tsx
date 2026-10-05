@@ -11,7 +11,7 @@ export default function Search() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="Search" showBackButton>
+    <ScreenLayout title="Search">
       <View style={styles.container}>
         <Text style={styles.title}>Search</Text>
       </View>

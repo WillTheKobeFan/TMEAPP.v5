@@ -11,7 +11,7 @@ export default function MyHub() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="MyHub" showBackButton>
+    <ScreenLayout title="MyHub">
       <View style={styles.container}>
         <Text style={styles.title}>MyHub</Text>
       </View>

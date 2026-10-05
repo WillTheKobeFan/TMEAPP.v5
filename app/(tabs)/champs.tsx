@@ -11,7 +11,7 @@ export default function Champs() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="Champs" showBackButton>
+    <ScreenLayout title="Champs">
       <View style={styles.container}>
         <Text style={styles.title}>Champs</Text>
       </View>

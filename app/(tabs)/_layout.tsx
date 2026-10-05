@@ -27,6 +27,14 @@ export default function TabsLayout() {
       <Tabs.Screen name="search" />
       <Tabs.Screen name="settings" />
 
+      {/* Organization Hub - hidden from bottom navigation */}
+      <Tabs.Screen
+        name="organization"
+        options={{
+          href: null,
+        }}
+      />
+
       {/* Development only */}
       <Tabs.Screen
         name="offering-preview"

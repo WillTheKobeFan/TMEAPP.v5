@@ -11,7 +11,7 @@ export default function Standings() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="Standings" showBackButton>
+    <ScreenLayout title="Standings">
       <View style={styles.container}>
         <Text style={styles.title}>Standings</Text>
       </View>

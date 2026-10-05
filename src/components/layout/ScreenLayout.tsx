@@ -4,14 +4,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import React, {
   ReactNode,
-  useMemo,
+  useEffect,
   useState,
 } from "react";
 import {
-  Image,
-  ImageSourcePropType,
-  Modal,
-  Pressable,
   SafeAreaView,
   ScrollView,
   StyleProp,
@@ -23,52 +19,11 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { useLeague } from "@/context/LeagueContext";
 import { useTextSize } from "@/context/TextSizeContext";
 import { useTheme } from "@/theme";
 
 const HEADER_SIDE_WIDTH = 88;
-const HEADER_ACTION_HEIGHT = 82;
-const HEADER_ICON_AREA_SIZE = 46;
-const HEADER_LABEL_SIZE = 12.5;
-
-const OVERLAY_COLOR = "rgba(0, 0, 0, 0.48)";
 const SHADOW_COLOR = "#000000";
-
-export type OrganizationId =
-  | "tme"
-  | "pickup"
-  | "taj";
-
-export type BackButtonVariant =
-  | "inline"
-  | "stacked"
-  | "circle";
-
-type OrganizationOption = {
-  id: OrganizationId;
-  name: string;
-  shortName: string;
-  logo?: ImageSourcePropType;
-  fallbackText?: string;
-};
-
-type CompatibleLeagueContext = {
-  selectedLeagueId?: string;
-  selectedOrganizationId?: string;
-
-  selectLeague?: (
-    organizationId: OrganizationId,
-  ) => void;
-
-  setSelectedLeagueId?: (
-    organizationId: OrganizationId,
-  ) => void;
-
-  setSelectedOrganizationId?: (
-    organizationId: OrganizationId,
-  ) => void;
-};
 
 export type ScreenLayoutProps = {
   title: string;
@@ -76,16 +31,6 @@ export type ScreenLayoutProps = {
 
   titleFontSize?: number;
   titleStyle?: StyleProp<TextStyle>;
-
-  showBackButton?: boolean;
-  backLabel?: string;
-  backButtonVariant?: BackButtonVariant;
-  onBackPress?: () => void;
-
-  showOrganizationSelector?: boolean;
-  onOrganizationChange?: (
-    organizationId: OrganizationId,
-  ) => void;
 
   showSettingsShortcut?: boolean;
 
@@ -103,93 +48,21 @@ export type ScreenLayoutProps = {
     | "handled";
 };
 
-const ORGANIZATIONS: OrganizationOption[] = [
-  {
-    id: "tme",
-    name: "TME Social Sports",
-    shortName: "TME",
-    logo: require("../../../assets/logos/tme.png"),
-  },
-  {
-    id: "pickup",
-    name: "Pickup Basketball USA",
-    shortName: "Pickup",
-    logo: require("../../../assets/logos/pickup.png"),
-  },
-  {
-    id: "taj",
-    name: "Taj Hill Hoops",
-    shortName: "THH",
-    logo: require("../../../assets/logos/taj.png"),
-  },
-];
-
-function isOrganizationId(
-  value: unknown,
-): value is OrganizationId {
-  return (
-    value === "tme" ||
-    value === "pickup" ||
-    value === "taj"
-  );
+function formatHeaderDate(date: Date) {
+  return date
+    .toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })
+    .toUpperCase();
 }
 
-type OrganizationLogoProps = {
-  organization: OrganizationOption;
-  size: number;
-  fallbackBackgroundColor: string;
-  fallbackTextColor: string;
-};
-
-function OrganizationLogo({
-  organization,
-  size,
-  fallbackBackgroundColor,
-  fallbackTextColor,
-}: OrganizationLogoProps) {
-  if (organization.logo) {
-    return (
-      <Image
-        source={organization.logo}
-        resizeMode="contain"
-        style={{
-          width: size,
-          height: size,
-        }}
-      />
-    );
-  }
-
-  return (
-    <View
-      style={[
-        styles.fallbackLogo,
-        {
-          width: size,
-          height: size,
-          borderRadius: size / 2,
-          backgroundColor:
-            fallbackBackgroundColor,
-        },
-      ]}
-    >
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        minimumFontScale={0.65}
-        style={[
-          styles.fallbackLogoText,
-          {
-            fontSize: size * 0.28,
-            color: fallbackTextColor,
-          },
-        ]}
-      >
-        {organization.fallbackText ??
-          organization.shortName}
-      </Text>
-    </View>
-  );
+function formatHeaderTime(date: Date) {
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 }
 
 export default function ScreenLayout({
@@ -198,14 +71,6 @@ export default function ScreenLayout({
 
   titleFontSize = 30,
   titleStyle,
-
-  showBackButton = true,
-  backLabel = "Back",
-  backButtonVariant = "inline",
-  onBackPress,
-
-  showOrganizationSelector = true,
-  onOrganizationChange,
 
   showSettingsShortcut = false,
 
@@ -222,174 +87,19 @@ export default function ScreenLayout({
   const { textScale } = useTextSize();
   const { theme } = useTheme();
 
-  const rawLeagueContext =
-    useLeague() as unknown as CompatibleLeagueContext;
+  const [currentDateTime, setCurrentDateTime] =
+    useState(() => new Date());
 
-  const [
-    organizationModalOpen,
-    setOrganizationModalOpen,
-  ] = useState(false);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 30_000);
 
-  const contextOrganizationId =
-    rawLeagueContext.selectedOrganizationId ??
-    rawLeagueContext.selectedLeagueId;
-
-  const selectedOrganizationId:
-    OrganizationId =
-    isOrganizationId(
-      contextOrganizationId,
-    )
-      ? contextOrganizationId
-      : "tme";
-
-  const selectedOrganization =
-    useMemo<OrganizationOption>(() => {
-      return (
-        ORGANIZATIONS.find(
-          (organization) =>
-            organization.id ===
-            selectedOrganizationId,
-        ) ?? ORGANIZATIONS[0]
-      );
-    }, [selectedOrganizationId]);
-
-  /*
-   * "circle" remains supported for compatibility
-   * with older V1 screens.
-   */
-  const usesStackedBackButton =
-    backButtonVariant === "stacked" ||
-    backButtonVariant === "circle";
-
-  const handleBackPress = () => {
-    if (onBackPress) {
-      onBackPress();
-      return;
-    }
-
-    if (router.canGoBack()) {
-      router.back();
-      return;
-    }
-
-    router.replace("/");
-  };
-
-  const updateOrganization = (
-    organizationId: OrganizationId,
-  ) => {
-    if (
-      rawLeagueContext
-        .setSelectedOrganizationId
-    ) {
-      rawLeagueContext.setSelectedOrganizationId(
-        organizationId,
-      );
-    } else if (
-      rawLeagueContext.selectLeague
-    ) {
-      rawLeagueContext.selectLeague(
-        organizationId,
-      );
-    } else {
-      rawLeagueContext.setSelectedLeagueId?.(
-        organizationId,
-      );
-    }
-
-    setOrganizationModalOpen(false);
-
-    onOrganizationChange?.(
-      organizationId,
-    );
-  };
+    return () => clearInterval(interval);
+  }, []);
 
   const openSettings = () => {
-    router.push(
-      "/(tabs)/settings" as never,
-    );
-  };
-
-  const renderBackControl = () => {
-    if (!showBackButton) {
-      return (
-        <View
-          style={styles.headerPlaceholder}
-        />
-      );
-    }
-
-    if (usesStackedBackButton) {
-      return (
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel={`Return to ${backLabel}`}
-          activeOpacity={0.68}
-          onPress={handleBackPress}
-          style={styles.stackedHeaderAction}
-        >
-          <View
-            style={
-              styles.stackedHeaderIconArea
-            }
-          >
-            <Ionicons
-              name="arrow-back"
-              size={32}
-              color={theme.headerIcon}
-            />
-          </View>
-
-          <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            minimumFontScale={0.72}
-            style={[
-              styles.stackedHeaderLabel,
-              {
-                fontSize:
-                  HEADER_LABEL_SIZE *
-                  textScale,
-                color: theme.headerText,
-              },
-            ]}
-          >
-            {backLabel}
-          </Text>
-        </TouchableOpacity>
-      );
-    }
-
-    return (
-      <TouchableOpacity
-        accessibilityRole="button"
-        accessibilityLabel="Go back"
-        activeOpacity={0.68}
-        onPress={handleBackPress}
-        style={styles.inlineBackButton}
-      >
-        <Ionicons
-          name="chevron-back"
-          size={28}
-          color={theme.headerIcon}
-        />
-
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={0.78}
-          style={[
-            styles.inlineBackText,
-            {
-              fontSize: 14 * textScale,
-              color: theme.headerText,
-            },
-          ]}
-        >
-          {backLabel}
-        </Text>
-      </TouchableOpacity>
-    );
+    router.push("/(tabs)/settings" as never);
   };
 
   return (
@@ -406,40 +116,34 @@ export default function ScreenLayout({
         style={[
           styles.screen,
           {
-            backgroundColor:
-              theme.background,
+            backgroundColor: theme.background,
           },
           style,
         ]}
       >
-        {/* STATIC HEADER */}
+        {/* STATIC MAIN-SCREEN HEADER */}
         <View
           style={[
             styles.header,
             {
-              backgroundColor:
-                theme.surface,
+              backgroundColor: theme.surface,
             },
           ]}
         >
-          <View
-            style={styles.leftHeaderSlot}
-          >
-            {renderBackControl()}
-          </View>
+          {/* LEFT — intentionally blank */}
+          <View style={styles.leftHeaderSlot} />
 
-          <View
-            style={styles.titleContainer}
-          >
+          {/* MIDDLE — screen title */}
+          <View style={styles.titleContainer}>
             <Text
               numberOfLines={2}
-              ellipsizeMode="tail"
+              adjustsFontSizeToFit
+              minimumFontScale={0.72}
               style={[
                 styles.headerTitle,
                 {
                   fontSize:
-                    titleFontSize *
-                    textScale,
+                    titleFontSize * textScale,
 
                   lineHeight:
                     titleFontSize *
@@ -455,85 +159,41 @@ export default function ScreenLayout({
             </Text>
           </View>
 
-          <View
-            style={styles.rightHeaderSlot}
-          >
-            {showOrganizationSelector ? (
-              <TouchableOpacity
-                accessibilityRole="button"
-                accessibilityLabel={`Open league selector. Currently ${selectedOrganization.name}`}
-                accessibilityHint="Opens the organization selection menu"
-                activeOpacity={0.68}
-                onPress={() =>
-                  setOrganizationModalOpen(
-                    true,
-                  )
-                }
-                style={
-                  styles.stackedHeaderAction
-                }
-              >
-                <View
-                  style={
-                    styles.stackedHeaderIconArea
-                  }
-                >
-                  <View
-                    style={[
-                      styles.logoSafeArea,
-                      {
-                        backgroundColor:
-                          theme.logoSurface,
-                        borderColor:
-                          theme.logoBorder,
-                      },
-                    ]}
-                  >
-                    <OrganizationLogo
-                      organization={
-                        selectedOrganization
-                      }
-                      size={
-                        HEADER_ICON_AREA_SIZE - 8
-                      }
-                      fallbackBackgroundColor={
-                        theme.primarySoft
-                      }
-                      fallbackTextColor={
-                        theme.primary
-                      }
-                    />
-                  </View>
-                </View>
+          {/* RIGHT — permanent stacked date / time */}
+          <View style={styles.rightHeaderSlot}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
+              style={[
+                styles.headerDate,
+                {
+                  fontSize: 13 * textScale,
+                  color: theme.headerText,
+                },
+              ]}
+            >
+              {formatHeaderDate(currentDateTime)}
+            </Text>
 
-                <Text
-                  numberOfLines={1}
-                  adjustsFontSizeToFit
-                  minimumFontScale={0.62}
-                  style={[
-                    styles.stackedHeaderLabel,
-                    {
-                      fontSize:
-                        HEADER_LABEL_SIZE *
-                        textScale,
-                      color: theme.headerText,
-                    },
-                  ]}
-                >
-                  League Selector
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <View
-                style={
-                  styles.headerPlaceholder
-                }
-              />
-            )}
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.7}
+              style={[
+                styles.headerTime,
+                {
+                  fontSize: 12 * textScale,
+                  color: theme.headerText,
+                },
+              ]}
+            >
+              {formatHeaderTime(currentDateTime)}
+            </Text>
           </View>
         </View>
 
-        {/* DYNAMIC MIDDLE CONTENT */}
+        {/* DYNAMIC SCREEN CONTENT */}
         {scrollEnabled ? (
           <ScrollView
             style={[
@@ -583,9 +243,7 @@ export default function ScreenLayout({
             accessibilityLabel="Open Settings"
             activeOpacity={0.82}
             onPress={openSettings}
-            style={
-              styles.settingsShortcutShadow
-            }
+            style={styles.settingsShortcutShadow}
           >
             <View
               style={[
@@ -604,259 +262,6 @@ export default function ScreenLayout({
             </View>
           </TouchableOpacity>
         ) : null}
-
-        {/* ORGANIZATION SELECTOR MODAL */}
-        <Modal
-          visible={
-            organizationModalOpen
-          }
-          transparent
-          animationType="fade"
-          statusBarTranslucent
-          onRequestClose={() =>
-            setOrganizationModalOpen(false)
-          }
-        >
-          <Pressable
-            style={[
-              styles.modalBackdrop,
-              {
-                backgroundColor:
-                  OVERLAY_COLOR,
-              },
-            ]}
-            onPress={() =>
-              setOrganizationModalOpen(false)
-            }
-          >
-            <Pressable
-              style={[
-                styles.modalCard,
-                {
-                  backgroundColor:
-                    theme.card,
-                },
-              ]}
-              onPress={(event) =>
-                event.stopPropagation()
-              }
-            >
-              <View
-                style={styles.modalHeader}
-              >
-                <View
-                  style={
-                    styles.modalHeaderText
-                  }
-                >
-                  <Text
-                    style={[
-                      styles.modalEyebrow,
-                      {
-                        fontSize:
-                          11.5 *
-                          textScale,
-                        color:
-                          theme.textMuted,
-                      },
-                    ]}
-                  >
-                    CURRENT ORGANIZATION
-                  </Text>
-
-                  <Text
-                    style={[
-                      styles.modalTitle,
-                      {
-                        fontSize:
-                          20 *
-                          textScale,
-                        color: theme.text,
-                      },
-                    ]}
-                  >
-                    {
-                      selectedOrganization.name
-                    }
-                  </Text>
-                </View>
-
-                <TouchableOpacity
-                  accessibilityRole="button"
-                  accessibilityLabel="Close organization selector"
-                  activeOpacity={0.75}
-                  onPress={() =>
-                    setOrganizationModalOpen(
-                      false,
-                    )
-                  }
-                  style={[
-                    styles.closeButton,
-                    {
-                      backgroundColor:
-                        theme.primarySoft,
-                    },
-                  ]}
-                >
-                  <Ionicons
-                    name="close"
-                    size={25}
-                    color={theme.text}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <View
-                style={[
-                  styles.modalDivider,
-                  {
-                    backgroundColor:
-                      theme.border,
-                  },
-                ]}
-              />
-
-              <View
-                style={
-                  styles.organizationList
-                }
-              >
-                {ORGANIZATIONS.map(
-                  (organization) => {
-                    const selected =
-                      organization.id ===
-                      selectedOrganizationId;
-
-                    return (
-                      <TouchableOpacity
-                        key={
-                          organization.id
-                        }
-                        accessibilityRole="radio"
-                        accessibilityState={{
-                          checked:
-                            selected,
-                        }}
-                        accessibilityLabel={`Select ${organization.name}`}
-                        activeOpacity={0.8}
-                        onPress={() =>
-                          updateOrganization(
-                            organization.id,
-                          )
-                        }
-                        style={[
-                          styles.organizationRow,
-                          {
-                            borderColor:
-                              selected
-                                ? theme.primary
-                                : theme.border,
-
-                            backgroundColor:
-                              selected
-                                ? theme.primarySoft
-                                : theme.surface,
-                          },
-                        ]}
-                      >
-                        <View
-                          style={
-                            styles.modalLogoContainer
-                          }
-                        >
-                          <OrganizationLogo
-                            organization={
-                              organization
-                            }
-                            size={48}
-                            fallbackBackgroundColor={
-                              theme.primarySoft
-                            }
-                            fallbackTextColor={
-                              theme.primary
-                            }
-                          />
-                        </View>
-
-                        <View
-                          style={
-                            styles.organizationText
-                          }
-                        >
-                          <Text
-                            style={[
-                              styles.organizationName,
-                              {
-                                fontSize:
-                                  15 *
-                                  textScale,
-
-                                color:
-                                  selected
-                                    ? theme.primary
-                                    : theme.text,
-                              },
-                            ]}
-                          >
-                            {
-                              organization.name
-                            }
-                          </Text>
-
-                          <Text
-                            style={[
-                              styles.organizationShortName,
-                              {
-                                fontSize:
-                                  12 *
-                                  textScale,
-
-                                color:
-                                  theme.textMuted,
-                              },
-                            ]}
-                          >
-                            {
-                              organization.shortName
-                            }
-                          </Text>
-                        </View>
-
-                        {selected ? (
-                          <View
-                            style={[
-                              styles.selectedCheck,
-                              {
-                                backgroundColor:
-                                  theme.primary,
-                              },
-                            ]}
-                          >
-                            <Ionicons
-                              name="checkmark"
-                              size={21}
-                              color={
-                                theme.buttonText
-                              }
-                            />
-                          </View>
-                        ) : (
-                          <Ionicons
-                            name="chevron-forward"
-                            size={22}
-                            color={
-                              theme.textMuted
-                            }
-                          />
-                        )}
-                      </TouchableOpacity>
-                    );
-                  },
-                )}
-              </View>
-            </Pressable>
-          </Pressable>
-        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -895,15 +300,12 @@ const styles = StyleSheet.create({
   },
 
   /*
-   * Equal-width side columns keep the title
-   * mathematically centered.
+   * Equal left/right columns keep the
+   * middle title mathematically centered.
    */
   leftHeaderSlot: {
     width: HEADER_SIDE_WIDTH,
-
     alignSelf: "stretch",
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   rightHeaderSlot: {
@@ -912,11 +314,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  headerPlaceholder: {
-    width: HEADER_SIDE_WIDTH,
-    height: HEADER_ACTION_HEIGHT,
   },
 
   titleContainer: {
@@ -938,72 +335,20 @@ const styles = StyleSheet.create({
     letterSpacing: -0.7,
   },
 
-  stackedHeaderAction: {
-    width: HEADER_SIDE_WIDTH,
-    minHeight: HEADER_ACTION_HEIGHT,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  stackedHeaderIconArea: {
-    width: HEADER_ICON_AREA_SIZE,
-    height: HEADER_ICON_AREA_SIZE,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  stackedHeaderLabel: {
+  headerDate: {
     width: "100%",
-
-    marginTop: 4,
 
     fontWeight: "800",
     textAlign: "center",
+    letterSpacing: 0.3,
   },
 
-  inlineBackButton: {
-    width: HEADER_SIDE_WIDTH,
-    minHeight: 54,
-
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-
-  inlineBackText: {
-    flexShrink: 1,
-
-    marginLeft: 1,
-
-    fontWeight: "800",
-  },
-
-  logoSafeArea: {
-    width: HEADER_ICON_AREA_SIZE,
-    height: HEADER_ICON_AREA_SIZE,
-
-    borderWidth: 1,
-    borderRadius: 10,
-
-    alignItems: "center",
-    justifyContent: "center",
-
-    overflow: "hidden",
-  },
-
-  fallbackLogo: {
-    paddingHorizontal: 4,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  fallbackLogoText: {
+  headerTime: {
     width: "100%",
 
-    fontWeight: "900",
+    marginTop: 3,
+
+    fontWeight: "800",
     textAlign: "center",
   },
 
@@ -1047,132 +392,6 @@ const styles = StyleSheet.create({
     height: 56,
 
     borderRadius: 28,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  modalBackdrop: {
-    flex: 1,
-
-    paddingHorizontal: 18,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  modalCard: {
-    width: "100%",
-    maxWidth: 620,
-
-    borderRadius: 25,
-
-    overflow: "hidden",
-
-    shadowColor: SHADOW_COLOR,
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 16,
-    elevation: 14,
-  },
-
-  modalHeader: {
-    minHeight: 105,
-
-    paddingHorizontal: 20,
-    paddingVertical: 18,
-
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  modalHeaderText: {
-    flex: 1,
-    paddingRight: 14,
-  },
-
-  modalEyebrow: {
-    fontWeight: "800",
-    letterSpacing: 1.1,
-  },
-
-  modalTitle: {
-    marginTop: 5,
-
-    fontWeight: "900",
-  },
-
-  closeButton: {
-    width: 51,
-    height: 51,
-
-    borderRadius: 26,
-
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  modalDivider: {
-    height:
-      StyleSheet.hairlineWidth,
-
-    marginHorizontal: 20,
-  },
-
-  organizationList: {
-    paddingHorizontal: 16,
-    paddingTop: 15,
-    paddingBottom: 17,
-  },
-
-  organizationRow: {
-    minHeight: 84,
-
-    marginBottom: 11,
-    paddingHorizontal: 14,
-
-    borderWidth: 1.2,
-    borderRadius: 19,
-
-    flexDirection: "row",
-    alignItems: "center",
-  },
-
-  modalLogoContainer: {
-    width: 55,
-    height: 55,
-
-    marginRight: 14,
-
-    alignItems: "center",
-    justifyContent: "center",
-
-    overflow: "hidden",
-  },
-
-  organizationText: {
-    flex: 1,
-    paddingRight: 12,
-  },
-
-  organizationName: {
-    fontWeight: "800",
-  },
-
-  organizationShortName: {
-    marginTop: 3,
-
-    fontWeight: "500",
-  },
-
-  selectedCheck: {
-    width: 40,
-    height: 40,
-
-    borderRadius: 20,
 
     alignItems: "center",
     justifyContent: "center",

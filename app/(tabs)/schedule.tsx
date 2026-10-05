@@ -11,7 +11,7 @@ export default function Schedule() {
   const styles = createStyles(theme);
 
   return (
-    <ScreenLayout title="Schedule" showBackButton>
+    <ScreenLayout title="Schedule">
       <View style={styles.container}>
         <Text style={styles.title}>Schedule</Text>
       </View>
