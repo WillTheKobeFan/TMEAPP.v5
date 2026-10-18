@@ -21,6 +21,12 @@ type Organization = {
   logo: ImageSourcePropType;
 };
 
+type TrainingOrganization = {
+  id: string;
+  name: string;
+  logo: ImageSourcePropType;
+};
+
 const ORGANIZATIONS: Organization[] = [
   {
     id: "tme",
@@ -39,12 +45,21 @@ const ORGANIZATIONS: Organization[] = [
   },
 ];
 
+const TRAINING_ORGANIZATIONS: TrainingOrganization[] = [
+  {
+    id: "develop-now",
+    name: "Develop Now Basketball",
+    logo: require("../../assets/logos/develop-now.jpg"),
+  },
+];
+
 export default function HomeRoute() {
   const router = useRouter();
   const { theme, isDark } = useTheme();
   const styles = createStyles(theme, isDark);
 
   const [organizationsOpen, setOrganizationsOpen] = useState(true);
+  const [trainingOpen, setTrainingOpen] = useState(false);
 
   return (
     <ScreenLayout title="SportSync" contentStyle={styles.content}>
@@ -184,12 +199,22 @@ export default function HomeRoute() {
 
       {/* TRAINING & DEVELOPMENT */}
       <View style={styles.section}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Training and Development"
-          style={styles.categoryShell}
-        >
-          <View style={styles.categoryHeader}>
+        <View style={styles.categoryShell}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={
+              trainingOpen
+                ? "Collapse Training and Development"
+                : "Expand Training and Development"
+            }
+            accessibilityState={{
+              expanded: trainingOpen,
+            }}
+            onPress={() =>
+              setTrainingOpen((current) => !current)
+            }
+            style={styles.categoryHeader}
+          >
             <View style={styles.categoryIcon}>
               <Ionicons
                 name="fitness-outline"
@@ -209,12 +234,61 @@ export default function HomeRoute() {
             </View>
 
             <Ionicons
-              name="chevron-forward"
+              name={
+                trainingOpen
+                  ? "chevron-down"
+                  : "chevron-forward"
+              }
               size={23}
               color={theme.textMuted}
             />
-          </View>
-        </Pressable>
+          </Pressable>
+
+          {trainingOpen ? (
+            <View style={styles.organizationList}>
+              {TRAINING_ORGANIZATIONS.map((training) => (
+                <View key={training.id}>
+                  <View style={styles.divider} />
+
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={training.name}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/training/[trainingId]",
+                        params: {
+                          trainingId: training.id,
+                        },
+                      })
+                    }
+                    style={styles.organizationRow}
+                  >
+                    <View style={styles.trainingLogoBox}>
+                      <Image
+                        source={training.logo}
+                        resizeMode="contain"
+                        style={styles.trainingLogo}
+                      />
+                    </View>
+
+                    <Text
+                      numberOfLines={2}
+                      style={styles.organizationName}
+                    >
+                      {training.name}
+                    </Text>
+
+                    <Ionicons
+                      name="chevron-forward"
+                      size={21}
+                      color={theme.textMuted}
+                    />
+                  </Pressable>
+                </View>
+              ))}
+            </View>
+          ) : null}
+        </View>
       </View>
 
       {/* RESOURCES & SUPPORT */}
@@ -372,6 +446,7 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       marginRight: 14,
 
       borderRadius: 15,
+
       backgroundColor: isDark
         ? "#111113"
         : theme.primarySoft,
@@ -398,6 +473,7 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       fontSize: 13,
       lineHeight: 18,
       fontWeight: "500",
+
       color: theme.textMuted,
     },
 
@@ -440,6 +516,25 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       height: 44,
     },
 
+    trainingLogoBox: {
+      width: 64,
+      height: 48,
+      marginRight: 14,
+
+      borderRadius: 12,
+      backgroundColor: theme.logoSurface,
+
+      alignItems: "center",
+      justifyContent: "center",
+
+      overflow: "hidden",
+    },
+
+    trainingLogo: {
+      width: 62,
+      height: 46,
+    },
+
     organizationName: {
       flex: 1,
       paddingRight: 8,
@@ -447,6 +542,7 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       fontSize: 15,
       lineHeight: 20,
       fontWeight: "800",
+
       color: theme.text,
     },
   });

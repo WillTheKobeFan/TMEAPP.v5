@@ -441,9 +441,25 @@ export const REGISTRATION_MODE_IDS = {
 export type RegistrationModeId =
   (typeof REGISTRATION_MODE_IDS)[keyof typeof REGISTRATION_MODE_IDS];
 
+export type RegistrationOverride =
+  | "automatic"
+  | "open"
+  | "closed";
+
 export type OfferingRegistration = {
   required?: boolean;
   mode?: RegistrationModeId;
+
+  // Registration scheduling
+  opensAt?: string;
+  closesAt?: string;
+  reopensAt?: string;
+
+  // Automatic registration controls
+  automaticScheduling?: boolean;
+
+  // Admin-controlled registration availability
+  manualOverride?: RegistrationOverride;
 };
 
 // -----------------------------------------------------------------------------
@@ -465,6 +481,11 @@ export type OfferingRegistration = {
  *
  * Both use the same base model.
  */
+export type OfferingInstruction = {
+  sport?: string;
+  focus?: string;
+};
+
 export type Offering = {
   /**
    * Stable offering instance ID.
@@ -487,6 +508,8 @@ export type Offering = {
   status: OfferingStatusId;
 
   audience?: OfferingAudience;
+
+  instruction?: OfferingInstruction;
 
   dates?: OfferingDates;
 

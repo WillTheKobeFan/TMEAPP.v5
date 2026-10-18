@@ -11,20 +11,39 @@ import { ThemeProvider } from "@/theme";
 export default function RootLayout() {
   return (
     <ThemeProvider>
-	<TextSizeProvider>     
+      <TextSizeProvider>
         <MembershipProvider>
-	 <SafeAreaProvider>
-        <LeagueProvider>
+          <SafeAreaProvider>
+            <LeagueProvider>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  gestureEnabled: true,
+                  gestureDirection: "horizontal",
+                }}
+              >
+                <Stack.Screen name="(tabs)" />
 
-            <Stack
-              screenOptions={{
-                headerShown: false,
-              }}
-            />
-          </LeagueProvider>
-        </SafeAreaProvider>
-      </MembershipProvider>
-    </TextSizeProvider>
+                <Stack.Screen
+                  name="organization/[organizationId]"
+                  options={{
+                    gestureEnabled: true,
+                    gestureDirection: "horizontal",
+                  }}
+                />
+
+                <Stack.Screen
+                  name="training/[trainingId]"
+                  options={{
+                    gestureEnabled: true,
+                    gestureDirection: "horizontal",
+                  }}
+                />
+              </Stack>
+            </LeagueProvider>
+          </SafeAreaProvider>
+        </MembershipProvider>
+      </TextSizeProvider>
     </ThemeProvider>
   );
 }

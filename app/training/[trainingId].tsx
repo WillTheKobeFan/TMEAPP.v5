@@ -1,11 +1,10 @@
-// app/organization/[organizationId].tsx
+// app/(tabs)/training/[trainingId].tsx
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Image,
-  ImageSourcePropType,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -14,57 +13,42 @@ import {
   View,
 } from "react-native";
 
-import {
-  ORGANIZATIONS,
-  ORGANIZATION_IDS,
-  type OrganizationId,
-} from "@/config/organizations";
 import { AppTheme, useTheme } from "@/theme";
 
 const HEADER_SIDE_WIDTH = 96;
 
-const ORGANIZATION_LOGOS: Record<OrganizationId, ImageSourcePropType> = {
-  [ORGANIZATION_IDS.TME]: require("../../../assets/logos/tme.png"),
-  [ORGANIZATION_IDS.PICKUP]: require("../../../assets/logos/pickup.png"),
-  [ORGANIZATION_IDS.TAJ]: require("../../../assets/logos/taj.png"),
+const TRAINING_BUSINESSES = {
+  "develop-now": {
+    id: "develop-now",
+    name: "Develop Now Basketball",
+    shortName: "Develop Now",
+    description:
+      "Basketball training, development programs, sessions and availability.",
+    banner: require("../../assets/logos/develop-now.jpg"),
+    facilityType: "multi" as const,
+  },
 };
+
+type TrainingId = keyof typeof TRAINING_BUSINESSES;
 
 const HUB_ITEMS = [
   {
     id: "directory",
-    title: "League Directory",
-    description: "Leagues, schedules & locations",
+    title: "Training Directory",
+    description: "Programs & training offerings",
     icon: "list-outline",
   },
   {
     id: "registration",
     title: "Registration Information",
-    description: "Registration, fees & requirements",
+    description: "How to register & availability",
     icon: "document-text-outline",
-  },
-  {
-    id: "league-information",
-    title: "League Information & Status",
-    description: "League details & current updates",
-    icon: "stats-chart-outline",
   },
   {
     id: "facility",
     title: "Facility Information",
-    description: "Locations & facility information",
+    description: "Locations & facility details",
     icon: "business-outline",
-  },
-  {
-    id: "recognition",
-    title: "Organization Recognition",
-    description: "Awards, achievements & recognition",
-    icon: "ribbon-outline",
-  },
-  {
-    id: "champions-highlights",
-    title: "Champions & Highlights",
-    description: "Champions, photos & highlights",
-    icon: "trophy-outline",
   },
 ] as const;
 
@@ -85,16 +69,15 @@ function formatHeaderTime(date: Date) {
   });
 }
 
-function isOrganizationId(value: string): value is OrganizationId {
-  return Object.values(ORGANIZATION_IDS).includes(
-    value as OrganizationId
-  );
+function isTrainingId(value: string): value is TrainingId {
+  return value in TRAINING_BUSINESSES;
 }
 
-export default function OrganizationHubRoute() {
+export default function TrainingHubRoute() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ organizationId?: string }>();
+  const params = useLocalSearchParams<{ trainingId?: string }>();
   const { theme, isDark } = useTheme();
+
   const styles = useMemo(
     () => createStyles(theme, isDark),
     [theme, isDark]
@@ -114,16 +97,15 @@ export default function OrganizationHubRoute() {
   }, []);
 
   const requestedId =
-    typeof params.organizationId === "string"
-      ? params.organizationId
-      : ORGANIZATION_IDS.TME;
+    typeof params.trainingId === "string"
+      ? params.trainingId
+      : "develop-now";
 
-  const organizationId: OrganizationId = isOrganizationId(requestedId)
+  const trainingId: TrainingId = isTrainingId(requestedId)
     ? requestedId
-    : ORGANIZATION_IDS.TME;
+    : "develop-now";
 
-  const organization = ORGANIZATIONS[organizationId];
-  const organizationLogo = ORGANIZATION_LOGOS[organizationId];
+  const training = TRAINING_BUSINESSES[trainingId];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -157,7 +139,7 @@ export default function OrganizationHubRoute() {
               minimumFontScale={0.62}
               style={styles.headerTitle}
             >
-              {organization.name}
+              {training.name}
             </Text>
           </View>
 
@@ -172,33 +154,29 @@ export default function OrganizationHubRoute() {
           </View>
         </View>
 
-        {/* SCROLLABLE ORGANIZATION CONTENT */}
+        {/* SCROLLABLE TRAINING CONTENT */}
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
         >
-          {/* ORGANIZATION INTRO */}
-          <View style={styles.organizationIntro}>
-            <View style={styles.organizationLogoCard}>
-              <Image
-                source={organizationLogo}
-                resizeMode="contain"
-                style={styles.organizationLogo}
-              />
-            </View>
-
-            <View style={styles.organizationDescriptionContainer}>
-              <Text style={styles.organizationDescription}>
-                {organization.description}
-              </Text>
-            </View>
+          {/* ADAPTIVE BRANDING — BANNER */}
+          <View style={styles.bannerCard}>
+            <Image
+              source={training.banner}
+              resizeMode="contain"
+              style={styles.banner}
+            />
           </View>
 
-          {/* ORGANIZATION SEARCH */}
+          <Text style={styles.trainingDescription}>
+            {training.description}
+          </Text>
+
+          {/* TRAINING SEARCH */}
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={`Search ${organization.name}`}
+            accessibilityLabel={`Search ${training.name}`}
             style={styles.searchBar}
           >
             <Ionicons
@@ -211,17 +189,38 @@ export default function OrganizationHubRoute() {
               numberOfLines={1}
               style={styles.searchText}
             >
-              Search {organization.branding.shortName}
+              Search {training.shortName}
             </Text>
           </Pressable>
 
-          {/* ORGANIZATION DESTINATIONS */}
+          {/* TRAINING DESTINATIONS */}
           <View style={styles.destinationList}>
             {HUB_ITEMS.map((item) => (
               <Pressable
                 key={item.id}
                 accessibilityRole="button"
                 accessibilityLabel={item.title}
+                onPress={() => {
+                  if (item.id === "directory") {
+                    router.push({
+                      pathname:
+                        "/organization/[organizationId]/offering-directory",
+                      params: {
+                        organizationId: trainingId,
+                      },
+                    });
+                  }
+
+                  if (item.id === "registration") {
+                    router.push({
+                      pathname:
+                        "/organization/[organizationId]/registration",
+                      params: {
+                        organizationId: trainingId,
+                      },
+                    });
+                  }
+                }}
                 style={styles.destinationCard}
               >
                 <View style={styles.destinationIcon}>
@@ -251,7 +250,6 @@ export default function OrganizationHubRoute() {
             ))}
           </View>
         </ScrollView>
-
       </View>
     </SafeAreaView>
   );
@@ -366,20 +364,14 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       paddingBottom: 32,
     },
 
-    organizationIntro: {
-      marginBottom: 24,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-
-    organizationLogoCard: {
-      width: 104,
-      height: 104,
-      marginRight: 20,
+    bannerCard: {
+      width: "100%",
+      marginBottom: 16,
+      padding: 8,
 
       borderWidth: 1,
       borderColor: theme.border,
-      borderRadius: 24,
+      borderRadius: 20,
 
       backgroundColor: theme.logoSurface,
 
@@ -398,20 +390,21 @@ const createStyles = (theme: AppTheme, isDark: boolean) =>
       overflow: "hidden",
     },
 
-    organizationLogo: {
-      width: 88,
-      height: 88,
+    banner: {
+      width: "100%",
+      height: 116,
+      borderRadius: 12,
     },
 
-    organizationDescriptionContainer: {
-      flex: 1,
-      minWidth: 0,
-    },
+    trainingDescription: {
+      marginBottom: 24,
+      paddingHorizontal: 12,
 
-    organizationDescription: {
       fontSize: 15,
       lineHeight: 22,
       fontWeight: "700",
+      textAlign: "center",
+
       color: theme.textMuted,
     },
 

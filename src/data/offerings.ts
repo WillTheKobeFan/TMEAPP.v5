@@ -87,7 +87,7 @@ const TME_OFFERINGS: Offering[] = [
     type: OFFERING_TYPE_IDS.LEAGUE,
 
     name: "Sunday Men's Basketball",
-    shortName: "Sunday",
+    shortName: "Sunday AM",
 
     description:
       "Sunday men's basketball league competition managed by TME Social Sports.",
@@ -106,6 +106,10 @@ const TME_OFFERINGS: Offering[] = [
     registration: {
       required: true,
       mode: REGISTRATION_MODE_IDS.TEAM_AND_FREE_AGENT,
+      opensAt: "2026-10-12T00:00:00-04:00",
+      closesAt: "2026-11-12T23:59:59-05:00",
+      automaticScheduling: true,
+      manualOverride: "automatic",
     },
 
     capabilities: [
@@ -131,6 +135,11 @@ const TME_OFFERINGS: Offering[] = [
 
       OFFERING_CAPABILITY_IDS.INCIDENT_REPORTS,
     ],
+    customFields: {
+      registrationSubtitle: "Men\'s Rec League",
+      competitionLevel: "Advanced Competition",
+    },
+
   },
 
   {
@@ -140,7 +149,7 @@ const TME_OFFERINGS: Offering[] = [
     type: OFFERING_TYPE_IDS.LEAGUE,
 
     name: "Monday Men's Basketball",
-    shortName: "Monday",
+    shortName: "Monday PM",
 
     description:
       "Monday men's basketball league competition managed by TME Social Sports.",
@@ -159,6 +168,10 @@ const TME_OFFERINGS: Offering[] = [
     registration: {
       required: true,
       mode: REGISTRATION_MODE_IDS.TEAM_AND_FREE_AGENT,
+      opensAt: "2026-10-12T00:00:00-04:00",
+      closesAt: "2026-11-12T23:59:59-05:00",
+      automaticScheduling: true,
+      manualOverride: "automatic",
     },
 
     capabilities: [
@@ -184,6 +197,11 @@ const TME_OFFERINGS: Offering[] = [
 
       OFFERING_CAPABILITY_IDS.INCIDENT_REPORTS,
     ],
+    customFields: {
+      registrationSubtitle: "Men\'s Rec League",
+      competitionLevel: "Friendly Competition",
+    },
+
   },
 
   {
@@ -193,7 +211,7 @@ const TME_OFFERINGS: Offering[] = [
     type: OFFERING_TYPE_IDS.LEAGUE,
 
     name: "Wednesday Men's Basketball",
-    shortName: "Wednesday",
+    shortName: "Wednesday PM",
 
     description:
       "Wednesday men's basketball league competition managed by TME Social Sports.",
@@ -212,6 +230,11 @@ const TME_OFFERINGS: Offering[] = [
     registration: {
       required: true,
       mode: REGISTRATION_MODE_IDS.TEAM_AND_FREE_AGENT,
+      opensAt: "2026-10-12T00:00:00-04:00",
+      closesAt: "2026-11-12T23:59:59-05:00",
+      reopensAt: "2026-12-01T00:00:00-05:00",
+      automaticScheduling: true,
+      manualOverride: "closed",
     },
 
     capabilities: [
@@ -237,6 +260,11 @@ const TME_OFFERINGS: Offering[] = [
 
       OFFERING_CAPABILITY_IDS.INCIDENT_REPORTS,
     ],
+    customFields: {
+      registrationSubtitle: "Men\'s Rec League",
+      competitionLevel: "Intermediate Competition",
+    },
+
   },
 ];
 
@@ -821,6 +849,83 @@ const TAJ_OFFERINGS: Offering[] = [
 ];
 
 // =============================================================================
+// DEVELOP NOW BASKETBALL — TRAINING DEMO OFFERINGS
+// =============================================================================
+
+const DEVELOP_NOW_OFFERINGS: Offering[] = [
+  {
+    id: "develop-now-training",
+    organizationId: ORGANIZATION_IDS.DEVELOP_NOW,
+    type: OFFERING_TYPE_IDS.TRAINING,
+    name: "Basketball Training",
+    shortName: "Training",
+    description: "Basketball skills and player-development sessions.",
+    status: OFFERING_STATUS_IDS.UPCOMING,
+    instruction: {
+      sport: "Basketball",
+      focus: "Skills & Player Development",
+    },
+    registration: {
+      required: true,
+      mode: REGISTRATION_MODE_IDS.OPEN,
+    },
+    capabilities: [
+      OFFERING_CAPABILITY_IDS.REGISTRATION,
+      OFFERING_CAPABILITY_IDS.SCHEDULE,
+      OFFERING_CAPABILITY_IDS.ATTENDANCE,
+      OFFERING_CAPABILITY_IDS.MESSAGING,
+      OFFERING_CAPABILITY_IDS.NOTIFICATIONS,
+    ],
+  },
+  {
+    id: "develop-now-clinics",
+    organizationId: ORGANIZATION_IDS.DEVELOP_NOW,
+    type: OFFERING_TYPE_IDS.CLINIC,
+    name: "Basketball Clinics",
+    shortName: "Clinics",
+    description: "Focused basketball skills clinics.",
+    status: OFFERING_STATUS_IDS.UPCOMING,
+    instruction: {
+      sport: "Basketball",
+      focus: "Focused Skills Development",
+    },
+    registration: {
+      required: true,
+      mode: REGISTRATION_MODE_IDS.OPEN,
+    },
+    capabilities: [
+      OFFERING_CAPABILITY_IDS.REGISTRATION,
+      OFFERING_CAPABILITY_IDS.SCHEDULE,
+      OFFERING_CAPABILITY_IDS.ATTENDANCE,
+      OFFERING_CAPABILITY_IDS.NOTIFICATIONS,
+    ],
+  },
+  {
+    id: "develop-now-camps",
+    organizationId: ORGANIZATION_IDS.DEVELOP_NOW,
+    type: OFFERING_TYPE_IDS.CAMP,
+    name: "Basketball Camps",
+    shortName: "Camps",
+    description: "Basketball development camps.",
+    status: OFFERING_STATUS_IDS.UPCOMING,
+    instruction: {
+      sport: "Basketball",
+      focus: "Skills & Player Development",
+    },
+    registration: {
+      required: true,
+      mode: REGISTRATION_MODE_IDS.OPEN,
+    },
+    capabilities: [
+      OFFERING_CAPABILITY_IDS.REGISTRATION,
+      OFFERING_CAPABILITY_IDS.SCHEDULE,
+      OFFERING_CAPABILITY_IDS.ATTENDANCE,
+      OFFERING_CAPABILITY_IDS.NOTIFICATIONS,
+    ],
+  },
+];
+
+// =============================================================================
 // UNIVERSAL REGISTRY
 // =============================================================================
 
@@ -834,6 +939,7 @@ export const OFFERING_LIST: Offering[] = [
   ...TME_OFFERINGS,
   ...PICKUP_OFFERINGS,
   ...TAJ_OFFERINGS,
+  ...DEVELOP_NOW_OFFERINGS,
 ];
 
 /**

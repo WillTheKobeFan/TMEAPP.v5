@@ -27,6 +27,7 @@ export const ORGANIZATION_IDS = {
   TME: "tme",
   PICKUP: "pickup",
   TAJ: "taj",
+  DEVELOP_NOW: "develop-now",
 } as const;
 
 export type OrganizationId =
@@ -582,6 +583,108 @@ export const ORGANIZATIONS: Record<
           ROLE_IDS.COACH,
           ROLE_IDS.FACILITY,
         ],
+      },
+    ],
+  },
+
+  [ORGANIZATION_IDS.DEVELOP_NOW]: {
+    id: ORGANIZATION_IDS.DEVELOP_NOW,
+    name: "Develop Now Basketball",
+    description:
+      "Basketball training, player development, clinics, and camps.",
+    status: ORGANIZATION_STATUS_IDS.SETUP,
+
+    branding: {
+      shortName: "Develop Now",
+      accentColor: "#250F74",
+      logoKey: "develop-now",
+      fallbackEmoji: "🏀",
+    },
+
+    offeringIds: [
+      "develop-now-training",
+      "develop-now-clinics",
+      "develop-now-camps",
+    ],
+
+    roles: [
+      {
+        roleId: ROLE_IDS.ADMIN,
+        enabled: true,
+        customLabel: "Owner / Admin",
+      },
+      {
+        roleId: ROLE_IDS.CAPTAIN,
+        enabled: false,
+      },
+      {
+        roleId: ROLE_IDS.PLAYER,
+        enabled: true,
+        customLabel: "Athlete / Participant",
+      },
+      {
+        roleId: ROLE_IDS.REFEREE,
+        enabled: false,
+      },
+      {
+        roleId: ROLE_IDS.SCOREKEEPER,
+        enabled: false,
+      },
+      {
+        roleId: ROLE_IDS.COACH,
+        enabled: true,
+        customLabel: "Coach / Trainer",
+      },
+      {
+        roleId: ROLE_IDS.FACILITY,
+        enabled: true,
+        customLabel: "Site Coordinator",
+      },
+    ],
+
+    features: [
+      {
+        featureId: FEATURE_IDS.HOME,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MAIN_NAV,
+        order: 1,
+        allowedRoles: STANDARD_MEMBER_ROLES,
+      },
+      {
+        featureId: FEATURE_IDS.SCHEDULE,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MAIN_NAV,
+        order: 2,
+        allowedRoles: STANDARD_MEMBER_ROLES,
+      },
+      {
+        featureId: FEATURE_IDS.INBOX,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MAIN_NAV,
+        order: 3,
+        allowedRoles: STANDARD_MEMBER_ROLES,
+      },
+      {
+        featureId: FEATURE_IDS.PROGRESS,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MAIN_NAV,
+        order: 4,
+        customLabel: "Development",
+        allowedRoles: STANDARD_MEMBER_ROLES,
+      },
+      {
+        featureId: FEATURE_IDS.SEARCH,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MORE,
+        order: 5,
+        allowedRoles: STANDARD_MEMBER_ROLES,
+      },
+      {
+        featureId: FEATURE_IDS.SETTINGS,
+        enabled: true,
+        placement: FEATURE_PLACEMENTS.MORE,
+        order: 6,
+        allowedRoles: STANDARD_MEMBER_ROLES,
       },
     ],
   },
