@@ -293,6 +293,11 @@ export default function LeagueDirectoryRoute() {
 
   const pageWidth = screenWidth;
 
+  const loopingLeagues =
+    leagues.length > 1
+      ? [leagues[leagues.length - 1], ...leagues, leagues[0]]
+      : leagues;
+
   const handleMomentumEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
   ) => {
@@ -300,15 +305,25 @@ export default function LeagueDirectoryRoute() {
       event.nativeEvent.contentOffset.x / pageWidth
     );
 
-    const safeIndex = Math.max(
-      0,
-      Math.min(
-        nextIndex,
-        Math.max(leagues.length - 1, 0)
-      )
-    );
-
-    setPageIndex(safeIndex);
+    if (leagues.length <= 1) {
+      setPageIndex(0);
+    } else if (nextIndex === 0) {
+      setPageIndex(leagues.length - 1);
+      pagerRef.current?.scrollTo({
+        x: leagues.length * pageWidth,
+        animated: false,
+      });
+    } else if (nextIndex === leagues.length + 1) {
+      setPageIndex(0);
+      pagerRef.current?.scrollTo({
+        x: pageWidth,
+        animated: false,
+      });
+    } else {
+      setPageIndex(
+        Math.max(0, Math.min(nextIndex - 1, leagues.length - 1))
+      );
+    }
 
     // Start every league page in its compact state.
     setFacilityOpen(false);
@@ -406,14 +421,23 @@ export default function LeagueDirectoryRoute() {
             ref={pagerRef}
             horizontal
             pagingEnabled
+            contentOffset={{
+              x: leagues.length > 1 ? pageWidth : 0,
+              y: 0,
+            }}
             bounces={false}
             showsHorizontalScrollIndicator={false}
             onMomentumScrollEnd={handleMomentumEnd}
             style={styles.pager}
           >
-            {leagues.map((league, index) => {
+            {loopingLeagues.map((league, loopIndex) => {
+              const realIndex =
+                leagues.length > 1
+                  ? (loopIndex - 1 + leagues.length) % leagues.length
+                  : loopIndex;
+
               const isCurrentPage =
-                pageIndex === index;
+                pageIndex === realIndex;
 
               const isFacilityOpen =
                 facilityOpen && isCurrentPage;
@@ -426,7 +450,7 @@ export default function LeagueDirectoryRoute() {
 
               return (
                 <ScrollView
-                  key={league.id}
+                  key={`${league.id}-${loopIndex}`}
                   style={{
                     width: pageWidth,
                   }}

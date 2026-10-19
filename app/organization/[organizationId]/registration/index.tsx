@@ -183,6 +183,15 @@ export default function RegistrationInformationRoute() {
 
   const pageWidth = screenWidth;
 
+  const loopingRegistrations =
+    registrations.length > 1
+      ? [
+          registrations[registrations.length - 1],
+          ...registrations,
+          registrations[0],
+        ]
+      : registrations;
+
   const handleMomentumEnd = (
     event: NativeSyntheticEvent<NativeScrollEvent>
   ) => {
@@ -190,15 +199,28 @@ export default function RegistrationInformationRoute() {
       event.nativeEvent.contentOffset.x / pageWidth
     );
 
-    const safeIndex = Math.max(
-      0,
-      Math.min(
-        nextIndex,
-        Math.max(registrations.length - 1, 0)
-      )
-    );
-
-    setPageIndex(safeIndex);
+    if (registrations.length <= 1) {
+      setPageIndex(0);
+    } else if (nextIndex === 0) {
+      setPageIndex(registrations.length - 1);
+      pagerRef.current?.scrollTo({
+        x: registrations.length * pageWidth,
+        animated: false,
+      });
+    } else if (nextIndex === registrations.length + 1) {
+      setPageIndex(0);
+      pagerRef.current?.scrollTo({
+        x: pageWidth,
+        animated: false,
+      });
+    } else {
+      setPageIndex(
+        Math.max(
+          0,
+          Math.min(nextIndex - 1, registrations.length - 1)
+        )
+      );
+    }
   };
 
   const handleRegister = (
@@ -280,14 +302,18 @@ export default function RegistrationInformationRoute() {
             ref={pagerRef}
             horizontal
             pagingEnabled
+            contentOffset={{
+              x: registrations.length > 1 ? pageWidth : 0,
+              y: 0,
+            }}
             bounces={false}
             showsHorizontalScrollIndicator={false}
             onMomentumScrollEnd={handleMomentumEnd}
             style={styles.pager}
           >
-            {registrations.map((registration) => (
+            {loopingRegistrations.map((registration, loopIndex) => (
               <View
-                key={registration.id}
+                key={`${registration.id}-${loopIndex}`}
                 style={{
                   width: pageWidth,
                 }}
