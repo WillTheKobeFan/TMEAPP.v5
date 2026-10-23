@@ -33,6 +33,8 @@ export type ScreenLayoutProps = {
   titleStyle?: StyleProp<TextStyle>;
 
   showSettingsShortcut?: boolean;
+  showBackButton?: boolean;
+  onBackPress?: () => void;
 
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
@@ -69,10 +71,12 @@ export default function ScreenLayout({
   title,
   children,
 
-  titleFontSize = 30,
+  titleFontSize = 22,
   titleStyle,
 
   showSettingsShortcut = false,
+  showBackButton = false,
+  onBackPress,
 
   style,
   contentStyle,
@@ -130,8 +134,45 @@ export default function ScreenLayout({
             },
           ]}
         >
-          {/* LEFT — intentionally blank */}
-          <View style={styles.leftHeaderSlot} />
+          {/* LEFT — optional sub-screen navigation */}
+          <View style={styles.leftHeaderSlot}>
+            {showBackButton && (
+              <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Go back"
+                onPress={() => {
+                  if (onBackPress) {
+                    onBackPress();
+                  } else if (router.canGoBack()) {
+                    router.back();
+                  } else {
+                    router.replace("/(tabs)/settings");
+                  }
+                }}
+                activeOpacity={0.8}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Ionicons
+                  name="chevron-back"
+                  size={20}
+                  color={theme.headerText}
+                />
+                <Text
+                  style={{
+                    color: theme.headerText,
+                    fontSize: 14 * textScale,
+                    fontWeight: "600",
+                  }}
+                >
+                  Back
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
 
           {/* MIDDLE — screen title */}
           <View style={styles.titleContainer}>
@@ -306,6 +347,7 @@ const styles = StyleSheet.create({
   leftHeaderSlot: {
     width: HEADER_SIDE_WIDTH,
     alignSelf: "stretch",
+    justifyContent: "center",
   },
 
   rightHeaderSlot: {

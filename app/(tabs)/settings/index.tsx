@@ -1,6 +1,7 @@
 // app/(tabs)/settings.tsx
 
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "expo-router";
 import {
   Pressable,
   StyleSheet,
@@ -12,24 +13,21 @@ import ScreenLayout from "@/components/layout/ScreenLayout";
 import { AppTheme, useTheme } from "@/theme";
 
 export default function Settings() {
+  const router = useRouter();
   const {
     theme,
     themeMode,
     setThemeMode,
   } = useTheme();
 
-  const styles = createStyles(theme);
+  const styles = createStyles(theme, themeMode);
+  const [demoExpanded, setDemoExpanded] = useState(false);
 
   return (
     <ScreenLayout
       title="Settings"
-      showBackButton
     >
       <View style={styles.container}>
-        <Text style={styles.screenTitle}>
-          Settings
-        </Text>
-
         <View style={styles.displayCard}>
           <View style={styles.displayText}>
             <Text style={styles.cardTitle}>
@@ -95,12 +93,64 @@ export default function Settings() {
             </Pressable>
           </View>
         </View>
+
+        <View style={styles.demoCard}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Demo and Testing"
+            accessibilityState={{ expanded: demoExpanded }}
+            onPress={() => setDemoExpanded(!demoExpanded)}
+            style={styles.demoHeader}
+          >
+            <View style={styles.displayText}>
+              <Text style={styles.cardTitle}>Demo & Testing</Text>
+              <Text style={styles.cardSubtitle}>
+                Create and explore sandbox organizations.
+              </Text>
+            </View>
+            <Text style={styles.demoArrow}>
+              {demoExpanded ? "⌄" : "›"}
+            </Text>
+          </Pressable>
+
+          {demoExpanded && (
+            <View style={styles.demoOptions}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Create Blank Organization or Training"
+                onPress={() => router.push("/settings/sandbox/create")}
+                style={styles.demoOption}
+              >
+                <Text style={styles.cardTitle}>
+                  Create Blank Organization / Training
+                </Text>
+                <Text style={styles.cardSubtitle}>
+                  Start with an empty sandbox organization or training client.
+                </Text>
+              </Pressable>
+
+              <Pressable accessibilityRole="button" accessibilityLabel="My Sandbox Organizations and Training" onPress={() => router.push("/settings/sandbox")} style={styles.demoOption}>
+                <Text style={styles.cardTitle}>My Sandbox Organizations / Training</Text>
+                <Text style={styles.cardSubtitle}>View your saved fictional clients.</Text>
+              </Pressable>
+
+              <View style={styles.demoOption}>
+                <Text style={styles.cardTitle}>
+                  Create Prepopulated Demo
+                </Text>
+                <Text style={styles.cardSubtitle}>
+                  Explore a fictional organization with sample data.
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
       </View>
     </ScreenLayout>
   );
 }
 
-const createStyles = (theme: AppTheme) =>
+const createStyles = (theme: AppTheme, themeMode: "light" | "dark") =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -140,6 +190,40 @@ const createStyles = (theme: AppTheme) =>
       fontSize: 14,
       lineHeight: 20,
       color: theme.textMuted,
+    },
+
+    demoCard: {
+      marginTop: 16,
+      borderRadius: 18,
+      borderWidth: 1,
+      borderColor: theme.border,
+      backgroundColor: theme.card,
+      padding: 18,
+    },
+
+    demoHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+
+    demoArrow: {
+      fontSize: 28,
+      fontWeight: "700",
+      color: themeMode === "dark" ? "#FFFFFF" : theme.primary,
+    },
+
+    demoOptions: {
+      marginTop: 8,
+      gap: 12,
+    },
+
+    demoOption: {
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: theme.border,
+      backgroundColor: theme.background,
+      padding: 14,
     },
 
     modeButtons: {
