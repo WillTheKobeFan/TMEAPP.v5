@@ -31,6 +31,10 @@ export type SandboxOrganization = {
     description?: string;
     contactEmail?: string;
     contactPhone?: string;
+    website?: string;
+    publicEmail?: string;
+    primaryColor?: string;
+    secondaryColor?: string;
   };
 };
 

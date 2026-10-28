@@ -15,6 +15,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import ScreenLayout from "@/components/layout/ScreenLayout";
+import SportSyncColorPicker from "@/components/common/SportSyncColorPicker";
 import { useTheme } from "@/theme";
 import {
   getSandboxOrganizationById,
@@ -73,6 +74,10 @@ export default function SandboxSetupScreen() {
   const [description, setDescription] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [website, setWebsite] = useState("");
+  const [publicEmail, setPublicEmail] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("");
+  const [secondaryColor, setSecondaryColor] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
 
   const listRef = useRef<FlatList<number>>(null);
@@ -102,6 +107,10 @@ export default function SandboxSetupScreen() {
           setDescription(record.profile?.description ?? "");
           setContactEmail(record.profile?.contactEmail ?? "");
           setContactPhone(record.profile?.contactPhone ?? "");
+            setWebsite(record.profile?.website ?? "");
+            setPublicEmail(record.profile?.publicEmail ?? "");
+            setPrimaryColor(record.profile?.primaryColor ?? "");
+            setSecondaryColor(record.profile?.secondaryColor ?? "");
         }
       })
       .catch((err) => {
@@ -213,6 +222,31 @@ export default function SandboxSetupScreen() {
       return;
     }
 
+    const email = publicEmail.trim();
+    const url = website.trim();
+    const primary = primaryColor.trim();
+    const secondary = secondaryColor.trim();
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      Alert.alert("Invalid Email", "Enter a valid public email address.");
+      return;
+    }
+
+    if (url && !/^https?:\/\/[^\s]+\.[^\s]+$/i.test(url)) {
+      Alert.alert("Invalid Website", "Enter a full website URL starting with https://.");
+      return;
+    }
+
+    if (primary && !/^#[0-9a-fA-F]{6}$/.test(primary)) {
+      Alert.alert("Invalid Primary Color", "Use a six-digit HEX color, such as #663399.");
+      return;
+    }
+
+    if (secondary && !/^#[0-9a-fA-F]{6}$/.test(secondary)) {
+      Alert.alert("Invalid Secondary Color", "Use a six-digit HEX color, such as #16A34A.");
+      return;
+    }
+
     setSavingProfile(true);
 
     try {
@@ -221,6 +255,10 @@ export default function SandboxSetupScreen() {
         description: description.trim(),
         contactEmail: contactEmail.trim(),
         contactPhone: contactPhone.trim(),
+        website: url,
+        publicEmail: email,
+        primaryColor: primary,
+        secondaryColor: secondary,
       });
 
       setSandbox(updated);
@@ -371,7 +409,62 @@ export default function SandboxSetupScreen() {
                                   </Text>
                                 </Pressable>
                               </View>
-                            ) : open ? (
+                            ) : open && section.title === "Client Profile" &&
+                              row === "Contact & Branding" ? (
+                                <View style={{ gap: 10 }}>
+                                  <Text style={styles.rowText}>Website (Optional)</Text>
+                                  <TextInput
+                                    style={styles.input}
+                                    value={website}
+                                    onChangeText={setWebsite}
+                                    placeholder="https://example.com"
+                                    placeholderTextColor={theme.textMuted}
+                                    keyboardType="url"
+                                    autoCapitalize="none"
+                                  />
+
+                                  <Text style={styles.rowText}>Public Email (Optional)</Text>
+                                  <TextInput
+                                    style={styles.input}
+                                    value={publicEmail}
+                                    onChangeText={setPublicEmail}
+                                    placeholder="info@example.com"
+                                    placeholderTextColor={theme.textMuted}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                  />
+
+                                  <SportSyncColorPicker
+                                    label="Primary Color"
+                                    value={primaryColor}
+                                    onChange={setPrimaryColor}
+                                    textColor={theme.text}
+                                    borderColor={theme.border}
+                                    backgroundColor={isDark ? "#1F1F1F" : "#FFFFFF"}
+                                  />
+                                  <SportSyncColorPicker
+                                    label="Secondary Color"
+                                    value={secondaryColor}
+                                    onChange={setSecondaryColor}
+                                    textColor={theme.text}
+                                    borderColor={theme.border}
+                                    backgroundColor={isDark ? "#1F1F1F" : "#FFFFFF"}
+                                  />
+                                  <Text style={styles.detail}>
+                                    Logo upload will be added in a future step.
+                                  </Text>
+
+                                  <Pressable
+                                    onPress={saveProfile}
+                                    disabled={savingProfile}
+                                    style={styles.saveButton}
+                                  >
+                                    <Text style={styles.saveText}>
+                                      {savingProfile ? "Saving..." : "Save Changes"}
+                                    </Text>
+                                  </Pressable>
+                                </View>
+                              ) : open ? (
                               <Text style={styles.detail}>
                                 {rowDetail(section.title, row)}
                               </Text>
