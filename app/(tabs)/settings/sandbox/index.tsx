@@ -249,7 +249,9 @@ export default function SandboxListScreen() {
               <Text style={styles.detail}>
                 Type: {item.clientType === "organization"
                   ? "Organization"
-                  : "Training"}
+                  : item.clientType === "training"
+                    ? "Training & Development"
+                    : "Both"}
               </Text>
               <Text style={styles.detail}>
                 Facility: {item.facilityModel === "facility-based"

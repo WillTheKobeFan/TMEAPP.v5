@@ -18,7 +18,8 @@ function isSandboxOrganization(
     typeof item.id === "string" &&
     typeof item.name === "string" &&
     (item.clientType === "organization" ||
-      item.clientType === "training") &&
+      item.clientType === "training" ||
+      item.clientType === "both") &&
     (item.facilityModel === "facility-based" ||
       item.facilityModel === "non-facility-based") &&
     item.environment === "sandbox" &&
@@ -58,7 +59,8 @@ export async function createSandboxOrganization(
 
   if (
     input.clientType !== "organization" &&
-    input.clientType !== "training"
+    input.clientType !== "training" &&
+    input.clientType !== "both"
   ) {
     throw new Error("Invalid client type.");
   }
@@ -165,7 +167,8 @@ export async function updateSandboxOrganizationById(
 
   if (
     input.clientType !== "organization" &&
-    input.clientType !== "training"
+    input.clientType !== "training" &&
+    input.clientType !== "both"
   ) {
     throw new Error("Invalid client type.");
   }

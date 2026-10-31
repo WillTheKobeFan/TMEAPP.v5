@@ -201,7 +201,11 @@ export default function SandboxSetupScreen() {
     if (!sandbox) return "";
 
     if (section === "Client Profile" && row === "Client Information") {
-      return `${sandbox.name}\nType: ${sandbox.clientType === "training" ? "Training" : "Organization"}`;
+      return `${sandbox.name}\nType: ${sandbox.clientType === "organization"
+                  ? "Organization"
+                  : sandbox.clientType === "training"
+                    ? "Training & Development"
+                    : "Both"}`;
     }
     if (section === "Client Profile" && row === "Setup Status") {
       return `Status: Setup\nEnvironment: Sandbox Only\nID: ${sandbox.id.slice(-8)}`;
@@ -288,7 +292,11 @@ export default function SandboxSetupScreen() {
             <View style={styles.card}>
               <Text style={styles.heading}>{sandbox.name}</Text>
               <Text style={styles.detail}>
-                {sandbox.clientType === "training" ? "Training" : "Organization"}
+                {sandbox.clientType === "organization"
+                  ? "Organization"
+                  : sandbox.clientType === "training"
+                    ? "Training & Development"
+                    : "Both"}
                 {" • "}
                 {sandbox.facilityModel === "facility-based"
                   ? "Facility-Based"
@@ -359,6 +367,15 @@ export default function SandboxSetupScreen() {
                             {open && section.title === "Client Profile" &&
                             row === "Client Information" ? (
                               <View style={{ gap: 10 }}>
+                                <Text style={styles.rowText}>Client Template</Text>
+                                <Text style={styles.detail}>
+                                  {sandbox.clientType === "organization"
+                                    ? "Organization"
+                                    : sandbox.clientType === "training"
+                                      ? "Training & Development"
+                                      : "Both"}
+                                </Text>
+
                                 <Text style={styles.rowText}>Display Name</Text>
                                 <TextInput
                                   style={styles.input}

@@ -4,6 +4,7 @@
 export const SANDBOX_CLIENT_TYPES = {
   ORGANIZATION: "organization",
   TRAINING: "training",
+  BOTH: "both",
 } as const;
 
 export type SandboxClientType =

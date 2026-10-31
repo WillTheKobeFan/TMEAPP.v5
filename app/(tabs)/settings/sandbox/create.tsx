@@ -194,7 +194,7 @@ export default function CreateSandboxScreen() {
 
             <View style={styles.card}>
               <Text style={styles.heading}>1. Client Type</Text>
-              {(["organization", "training"] as const).map((value) => (
+              {(["organization", "training", "both"] as const).map((value) => (
                 <Pressable
                   key={value}
                   accessibilityRole="radio"
@@ -208,7 +208,9 @@ export default function CreateSandboxScreen() {
                   <Text style={styles.optionText}>
                     {value === "organization"
                       ? "Organization"
-                      : "Training"}
+                      : value === "training"
+                        ? "Training & Development"
+                        : "Both"}
                   </Text>
                 </Pressable>
               ))}
