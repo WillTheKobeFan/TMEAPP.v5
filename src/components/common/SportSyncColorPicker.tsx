@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Slider from "@react-native-community/slider";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   Pressable,
   StyleSheet,
@@ -127,6 +128,10 @@ export default function SportSyncColorPicker({
   }, [value]);
 
   const precisionHex = hsvToHex(hue, saturation, brightness);
+
+  const saturationStart = hsvToHex(hue, 0, brightness);
+  const saturationEnd = hsvToHex(hue, 100, brightness);
+  const brightnessEnd = hsvToHex(hue, saturation, 100);
 
   const validColor = /^#[0-9A-Fa-f]{6}$/.test(value);
   const validCustom = /^#[0-9A-Fa-f]{6}$/.test(customHex.trim());
@@ -295,7 +300,15 @@ export default function SportSyncColorPicker({
               <Text style={{ color: textColor }}>Reset</Text>
             </Pressable>
           </View>
-          <Slider
+          <View style={styles.gradientSliderContainer}>
+              <LinearGradient
+                colors={["#FF0000", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#FF00FF", "#FF0000"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                pointerEvents="none"
+                style={styles.gradientTrack}
+              />
+              <Slider
             minimumValue={0}
             maximumValue={359}
             step={1}
@@ -304,11 +317,12 @@ export default function SportSyncColorPicker({
               setHue(nextHue);
               onChange(hsvToHex(nextHue, saturation, brightness));
             }}
-            minimumTrackTintColor={precisionHex}
-            maximumTrackTintColor={borderColor}
+            minimumTrackTintColor="transparent"
+            maximumTrackTintColor="transparent"
             thumbTintColor={precisionHex}
             accessibilityLabel="Rainbow hue"
           />
+            </View>
 
           <View style={styles.resetHeading}>
             <Text style={{ color: textColor, flex: 1 }}>
@@ -323,7 +337,15 @@ export default function SportSyncColorPicker({
               <Text style={{ color: textColor }}>Reset</Text>
             </Pressable>
           </View>
-          <Slider
+          <View style={styles.gradientSliderContainer}>
+              <LinearGradient
+                colors={[saturationStart, saturationEnd]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                pointerEvents="none"
+                style={styles.gradientTrack}
+              />
+              <Slider
             minimumValue={0}
             maximumValue={100}
             step={1}
@@ -332,11 +354,12 @@ export default function SportSyncColorPicker({
               setSaturation(nextSaturation);
               onChange(hsvToHex(hue, nextSaturation, brightness));
             }}
-            minimumTrackTintColor={precisionHex}
-            maximumTrackTintColor={borderColor}
+            minimumTrackTintColor="transparent"
+            maximumTrackTintColor="transparent"
             thumbTintColor={precisionHex}
             accessibilityLabel="Color saturation"
           />
+            </View>
 
           <View style={styles.resetHeading}>
             <Text style={{ color: textColor, flex: 1 }}>
@@ -351,7 +374,15 @@ export default function SportSyncColorPicker({
               <Text style={{ color: textColor }}>Reset</Text>
             </Pressable>
           </View>
-          <Slider
+          <View style={styles.gradientSliderContainer}>
+              <LinearGradient
+                colors={["#000000", brightnessEnd]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                pointerEvents="none"
+                style={styles.gradientTrack}
+              />
+              <Slider
             minimumValue={0}
             maximumValue={100}
             step={1}
@@ -360,11 +391,12 @@ export default function SportSyncColorPicker({
               setBrightness(nextBrightness);
               onChange(hsvToHex(hue, saturation, nextBrightness));
             }}
-            minimumTrackTintColor={precisionHex}
-            maximumTrackTintColor={borderColor}
+            minimumTrackTintColor="transparent"
+            maximumTrackTintColor="transparent"
             thumbTintColor={precisionHex}
             accessibilityLabel="Color brightness"
           />
+            </View>
 
           <Pressable
             accessibilityRole="button"
@@ -422,6 +454,17 @@ export default function SportSyncColorPicker({
 
 const styles = StyleSheet.create({
   container: { gap: 8 },
+  gradientSliderContainer: {
+    height: 40,
+    justifyContent: "center",
+  },
+  gradientTrack: {
+    position: "absolute",
+    left: 15,
+    right: 15,
+    height: 8,
+    borderRadius: 4,
+  },
   label: { fontSize: 14, fontWeight: "600" },
   selectedRow: {
     borderWidth: 1,
